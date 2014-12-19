@@ -13,4 +13,16 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+    #import "BASAppDelegate.h"
+    #import "BASManager.h"
+    #import "ASIHTTPRequest.h"
+    #import "ASIFormDataRequest.h"
+    #import "Settings.h"
+    #import "BASBaseController.h"
 #endif
+#define ISIOS71 [[[UIDevice currentDevice] systemVersion] floatValue] == 7.099
+#define ISIOS7 [[[UIDevice currentDevice] systemVersion] floatValue] >= 7
+#define ISIOS6 [[[UIDevice currentDevice] systemVersion] floatValue] >= 6 && [[[UIDevice currentDevice] systemVersion] floatValue] < 7
+#define TheApp BASAppDelegate *app = (BASAppDelegate*)[[UIApplication sharedApplication] delegate]
+#define Is4Inch [(BASAppDelegate*)[[UIApplication sharedApplication] delegate] is4InchScreen]
+
