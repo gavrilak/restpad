@@ -17,7 +17,7 @@
 @property (nonatomic,strong)NSArray* content;
 
 @property(nonatomic, assign) id<BASPickerViewDelegate> delegate;
-- (id)initWithFrame:(CGRect)frame withContent:(NSArray*)content withDoneButton:(BOOL)state;
+- (id)initWithFrame:(CGRect)frame withContent:(NSArray*)content withDoneButton:(BOOL)state withCancelButton:(BOOL) cancel;
 - (void)selectRow:(NSInteger)row inComponent:(NSInteger)component;
 @end
 

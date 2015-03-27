@@ -92,7 +92,9 @@
 
 }
 - (void)btnPressed{
-    BASManager* manager = [BASManager sharedInstance];
+    TheApp;
+    if (!app.isBusy){
+        BASManager* manager = [BASManager sharedInstance];
     
     
     [manager getData:[manager formatRequest:@"GETVIRTUALTABLE" withParam:nil] success:^(id responseObject) {
@@ -142,7 +144,7 @@
         [manager showAlertViewWithMess:ERROR_MESSAGE];
     }];
 
-    
+  }
 }
 - (void)UpdateBadge{
     [self getData];

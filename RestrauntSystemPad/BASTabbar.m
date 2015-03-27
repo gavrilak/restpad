@@ -234,19 +234,20 @@
     
     TheApp;
     
-    UIButton* button = (UIButton*)sender;
+    if (!app.isBusy){
+        UIButton* button = (UIButton*)sender;
     
-    for (UIButton* obj in _buttons) {
-        [obj setSelected:NO];
-    }
-    [button setSelected:YES];
+        for (UIButton* obj in _buttons) {
+            [obj setSelected:NO];
+        }
+        [button setSelected:YES];
     
 
-    for(int i = 0; i < _buttons.count; i++){
+        for(int i = 0; i < _buttons.count; i++){
         
-        if(button == (UIButton*)[_buttons objectAtIndex:i]){
-            if(app.userType == UserTypeAdmin){
-                if(i == _buttons.count - 2) {
+            if(button == (UIButton*)[_buttons objectAtIndex:i]){
+                if(app.userType == UserTypeAdmin){
+                    if(i == _buttons.count - 2) {
                     NSString *customURL = @"RestrauntSystem://";
                      
                      if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:customURL]])
@@ -263,9 +264,9 @@
             app.navController = [[UINavigationController alloc]initWithRootViewController:(UIViewController*)[app.baseController.viewControllers objectAtIndex:i]];
             app.window.rootViewController = app.navController;
             return;
+            }
         }
     }
-    
 }
 - (void)showNoticesCount:(NSUInteger)noticesCnt
 {

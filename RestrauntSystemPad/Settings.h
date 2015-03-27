@@ -12,7 +12,7 @@
 #define EmptyString             @""
 
 //#define HTTP @"http://192.168.1.101:8080/"
-#define HTTP @"http://195.138.68.2:8080"
+#define HTTP @"http://192.168.1.123:8080"
 
 
 #define kMenuCatsCellReuseId        @"MenuCatsCell"

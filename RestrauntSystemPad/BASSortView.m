@@ -67,7 +67,7 @@
         [_orderBt setTitle:@"Заказы" forState:UIControlStateHighlighted];
         [_orderBt setTitle:@"Заказы" forState:UIControlStateSelected];
         [_orderBt addTarget:self action:@selector(clikedButton:) forControlEvents:UIControlEventTouchUpInside];
-        [_orderBt setFrame:CGRectMake(1, 0, 70.f, 25.f)];
+        [_orderBt setFrame:CGRectMake(1, 0, 80.f, 30.f)];
         [_orderBt setSelected:YES];
         curTopButton = _orderBt;
         [self addSubview:_orderBt];
@@ -84,11 +84,11 @@
         [_orderBt1 setTitle:@"Все" forState:UIControlStateHighlighted];
         [_orderBt1 setTitle:@"Все" forState:UIControlStateSelected];
         [_orderBt1 addTarget:self action:@selector(clikedSubButton:) forControlEvents:UIControlEventTouchUpInside];
-        [_orderBt1 setFrame:CGRectMake(_orderBt.frame.origin.x +  _orderBt.frame.size.width / 2 - image.size.width / 2, 25.f, image.size.width, image.size.height)];
+        [_orderBt1 setFrame:CGRectMake(_orderBt.frame.origin.x +  _orderBt.frame.size.width / 2 - image.size.width / 2, 30.f, image.size.width, image.size.height)];
         [self addSubview:_orderBt1];
         
         UIImageView* separator1= [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"delimiter_small.png"]];
-        [separator1 setFrame:CGRectMake(71.f, 10.f, 5.5f, 38.f)];
+        [separator1 setFrame:CGRectMake(81.f, 10.f, 5.5f, 38.f)];
         [self addSubview:separator1];
         
         self.dateBt = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -100,7 +100,7 @@
         [_dateBt setTitle:@"Дата" forState:UIControlStateHighlighted];
         [_dateBt setTitle:@"Дата" forState:UIControlStateSelected];
         [_dateBt addTarget:self action:@selector(clikedButton:) forControlEvents:UIControlEventTouchUpInside];
-        [_dateBt setFrame:CGRectMake(75.5f, 0, 70.f, 25.f)];
+        [_dateBt setFrame:CGRectMake(85.5f, 0, 90.f, 30.f)];
         [self addSubview:_dateBt];
         
         self.dateBt1 = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -115,12 +115,12 @@
         [_dateBt1 setTitle:@"" forState:UIControlStateHighlighted];
         [_dateBt1 setTitle:@"" forState:UIControlStateSelected];
         [_dateBt1 addTarget:self action:@selector(clikedSubButton:) forControlEvents:UIControlEventTouchUpInside];
-        [_dateBt1 setFrame:CGRectMake(_dateBt.frame.origin.x +  _dateBt.frame.size.width / 2 - image.size.width / 2 - 5.f, 25.f, image.size.width + 10.f, image.size.height)];
+        [_dateBt1 setFrame:CGRectMake(_dateBt.frame.origin.x +  _dateBt.frame.size.width / 2 - image.size.width / 2 - 10.f, 30.f, image.size.width + 20.f, image.size.height)];
         [self addSubview:_dateBt1];
 
         
         UIImageView* separator2= [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"delimiter_small.png"]];
-        [separator2 setFrame:CGRectMake(145.f, 10.f, 5.5f, 38.f)];
+        [separator2 setFrame:CGRectMake(175.f, 10.f, 5.5f, 38.f)];
         [self addSubview:separator2];
         
         
@@ -133,7 +133,7 @@
         [_tableBt setTitle:@"Столы" forState:UIControlStateHighlighted];
         [_tableBt setTitle:@"Столы" forState:UIControlStateSelected];
         [_tableBt addTarget:self action:@selector(clikedButton:) forControlEvents:UIControlEventTouchUpInside];
-        [_tableBt setFrame:CGRectMake(149.f, 0, 66.f, 25.f)];
+        [_tableBt setFrame:CGRectMake(180.f, 0, 90.f, 30.f)];
         [self addSubview:_tableBt];
         
         
@@ -149,12 +149,12 @@
         [_tableBt1 setTitle:@"Все" forState:UIControlStateHighlighted];
         [_tableBt1 setTitle:@"Все" forState:UIControlStateSelected];
         [_tableBt1 addTarget:self action:@selector(clikedSubButton:) forControlEvents:UIControlEventTouchUpInside];
-        [_tableBt1 setFrame:CGRectMake(_tableBt.frame.origin.x +  _tableBt.frame.size.width / 2 - image.size.width / 2, 25.f, image.size.width, image.size.height)];
+        [_tableBt1 setFrame:CGRectMake(_tableBt.frame.origin.x +  _tableBt.frame.size.width / 2 - image.size.width / 2 -10.f, 30.f, image.size.width +20.f, image.size.height)];
         [self addSubview:_tableBt1];
         
         
         UIImageView* separator3= [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"delimiter_small.png"]];
-        [separator3 setFrame:CGRectMake(215.f, 10.f, 5.5f, 38.f)];
+        [separator3 setFrame:CGRectMake(270.f, 10.f, 5.5f, 38.f)];
         [self addSubview:separator3];
         
         
@@ -167,7 +167,7 @@
         [_waiterBt setTitle:@"Официанты" forState:UIControlStateHighlighted];
         [_waiterBt setTitle:@"Официанты" forState:UIControlStateSelected];
         [_waiterBt addTarget:self action:@selector(clikedButton:) forControlEvents:UIControlEventTouchUpInside];
-        [_waiterBt setFrame:CGRectMake(214.f, 0, frame.size.width - 221.f, 25.f)];
+        [_waiterBt setFrame:CGRectMake(280.f, 0, 100.f, 30.f)];
         [self addSubview:_waiterBt];
         
         self.waiterBt1 = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -182,7 +182,7 @@
         [_waiterBt1 setTitle:@"Все" forState:UIControlStateHighlighted];
         [_waiterBt1 setTitle:@"Все" forState:UIControlStateSelected];
         [_waiterBt1 addTarget:self action:@selector(clikedSubButton:) forControlEvents:UIControlEventTouchUpInside];
-        [_waiterBt1 setFrame:CGRectMake(_waiterBt.frame.origin.x +  _waiterBt.frame.size.width / 2 - image.size.width / 2 - 20.f, 25.f, image.size.width +40.f, image.size.height)];
+        [_waiterBt1 setFrame:CGRectMake(_waiterBt.frame.origin.x +  _waiterBt.frame.size.width / 2 - image.size.width / 2 - 20.f, 30.f, image.size.width +40.f, image.size.height)];
         [self addSubview:_waiterBt1];
 
         
@@ -208,38 +208,37 @@
     return self;
 }
 - (void)clikedButton: (id)sender{
+    TheApp;
+    if (! app.isBusy) {
+        UIButton* button = (UIButton*)sender;
+        [_orderBt setSelected:NO];
+        [_dateBt setSelected:NO];
+        [_tableBt setSelected:NO];
+        [_waiterBt setSelected:NO];
+        [button setSelected:YES];
+        curTopButton = button;
+    
+        SortState state = ALLORDERS;
+    
+        if(button == _orderBt){
+            state = ALLORDERS;
+        } else if(button == _dateBt){
+            state = ALLORDERSBYDATE;
+        } else if(button == _tableBt){
+            state = ALLORDERSBYTABLE;
+        } else if(button == _waiterBt){
+            state = ALLORDERSBYEMPLOYEE;
+        }
 
-    
-    
-    UIButton* button = (UIButton*)sender;
-    [_orderBt setSelected:NO];
-    [_dateBt setSelected:NO];
-    [_tableBt setSelected:NO];
-    [_waiterBt setSelected:NO];
-    [button setSelected:YES];
-    curTopButton = button;
-    
-    SortState state = ALLORDERS;
-    
-    if(button == _orderBt){
-        state = ALLORDERS;
-    } else if(button == _dateBt){
-        state = ALLORDERSBYDATE;
-    } else if(button == _tableBt){
-        state = ALLORDERSBYTABLE;
-    } else if(button == _waiterBt){
-        state = ALLORDERSBYEMPLOYEE;
-    }
-
-    if([_delegate respondsToSelector:@selector(closedatePicker:)]){
-        [_delegate closedatePicker:self];
-    }
+        if([_delegate respondsToSelector:@selector(closedatePicker:)]){
+            [_delegate closedatePicker:self];
+        }
  
     
-    if([_delegate respondsToSelector:@selector(sortChoice:withType:)]){
-        [_delegate sortChoice:self withType:state];
+        if([_delegate respondsToSelector:@selector(sortChoice:withType:)]){
+            [_delegate sortChoice:self withType:state];
+        }
     }
-
 }
 - (void)clikedSubButton: (id)sender{
     

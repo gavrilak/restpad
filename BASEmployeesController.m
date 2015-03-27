@@ -271,7 +271,7 @@
             _content = _jobData;
             
             
-            self.pickeView = [[BASPickerView alloc]initWithFrame:CGRectMake(_jobButton.frame.origin.x +1.f, _jobButton.frame.size.height - 5.f, _jobButton.frame.size.width - 1.f, 180.f) withContent:[NSArray arrayWithArray:result] withDoneButton:NO];
+            self.pickeView = [[BASPickerView alloc]initWithFrame:CGRectMake(_jobButton.frame.origin.x +1.f, _jobButton.frame.size.height - 5.f, _jobButton.frame.size.width - 1.f, 180.f) withContent:[NSArray arrayWithArray:result] withDoneButton:NO withCancelButton:NO];
             self.pickeView.delegate = (id) self;
             [self.pickeView selectRow:curRowJob inComponent:curComponentJob];
             [self.view addSubview:_pickeView];
@@ -285,7 +285,7 @@
             _content = _statusData;
             
         
-            self.pickeView = [[BASPickerView alloc]initWithFrame:CGRectMake(_statusButton.frame.origin.x, _statusButton.frame.size.height - 5.f, _statusButton.frame.size.width - 1.f, 180.f) withContent:[NSArray arrayWithArray:result] withDoneButton:NO];
+            self.pickeView = [[BASPickerView alloc]initWithFrame:CGRectMake(_statusButton.frame.origin.x, _statusButton.frame.size.height - 5.f, _statusButton.frame.size.width - 1.f, 180.f) withContent:[NSArray arrayWithArray:result] withDoneButton:NO withCancelButton:NO];
             self.pickeView.delegate = (id) self;
             [self.pickeView selectRow:curRowState inComponent:curComponentState];
             [self.view addSubview:_pickeView];

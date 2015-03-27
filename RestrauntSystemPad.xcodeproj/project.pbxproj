@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		32D221601A44414600D6E39F /* hd_movement_on_clients@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D2215E1A44414600D6E39F /* hd_movement_on_clients@2x.png */; };
+		32D221611A44414600D6E39F /* hd_rating@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D2215F1A44414600D6E39F /* hd_rating@2x.png */; };
 		A53EAD501A2C63DD0048C8FB /* data_infograph@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A53EAD4F1A2C63DD0048C8FB /* data_infograph@2x.png */; };
 		A53EAD541A2C65240048C8FB /* BASInfographView.m in Sources */ = {isa = PBXBuildFile; fileRef = A53EAD531A2C65240048C8FB /* BASInfographView.m */; };
 		A574F3871A08DF2000D5EFB3 /* cell_num@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A574F3861A08DF2000D5EFB3 /* cell_num@2x.png */; };
@@ -261,6 +263,7 @@
 		A5C2246D19B9A66200FF2ACE /* door_vert@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5C2246C19B9A66200FF2ACE /* door_vert@2x.png */; };
 		A5C2247019B9CE3600FF2ACE /* cross_act@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5C2246E19B9CE3600FF2ACE /* cross_act@2x.png */; };
 		A5C2247119B9CE3600FF2ACE /* tick_act@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5C2246F19B9CE3600FF2ACE /* tick_act@2x.png */; };
+		BFD1EA301AC5AE3700215ADD /* btn_cancellation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFD1EA2F1AC5AE3700215ADD /* btn_cancellation@2x.png */; };
 		CB617EDE197B9D6D00E9C3CF /* BASMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB617EDD197B9D6D00E9C3CF /* BASMenuController.m */; };
 		CB617EE1197B9DD700E9C3CF /* BASCustomTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB617EE0197B9DD700E9C3CF /* BASCustomTableView.m */; };
 		CB617EE6197B9E4500E9C3CF /* BASCategoryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB617EE5197B9E4500E9C3CF /* BASCategoryTableViewCell.m */; };
@@ -290,6 +293,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		32D2215E1A44414600D6E39F /* hd_movement_on_clients@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hd_movement_on_clients@2x.png"; sourceTree = "<group>"; };
+		32D2215F1A44414600D6E39F /* hd_rating@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hd_rating@2x.png"; sourceTree = "<group>"; };
 		A53EAD4F1A2C63DD0048C8FB /* data_infograph@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "data_infograph@2x.png"; sourceTree = "<group>"; };
 		A53EAD521A2C65240048C8FB /* BASInfographView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASInfographView.h; sourceTree = "<group>"; };
 		A53EAD531A2C65240048C8FB /* BASInfographView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASInfographView.m; sourceTree = "<group>"; };
@@ -620,6 +625,7 @@
 		A5C2246C19B9A66200FF2ACE /* door_vert@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "door_vert@2x.png"; path = "RestrauntSystemPad/Resource/Halls/door_vert@2x.png"; sourceTree = SOURCE_ROOT; };
 		A5C2246E19B9CE3600FF2ACE /* cross_act@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cross_act@2x.png"; sourceTree = "<group>"; };
 		A5C2246F19B9CE3600FF2ACE /* tick_act@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tick_act@2x.png"; sourceTree = "<group>"; };
+		BFD1EA2F1AC5AE3700215ADD /* btn_cancellation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_cancellation@2x.png"; sourceTree = "<group>"; };
 		CB617EDC197B9D6D00E9C3CF /* BASMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BASMenuController.h; path = RestrauntSystemPad/BASMenuController.h; sourceTree = "<group>"; };
 		CB617EDD197B9D6D00E9C3CF /* BASMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BASMenuController.m; path = RestrauntSystemPad/BASMenuController.m; sourceTree = "<group>"; };
 		CB617EDF197B9DD700E9C3CF /* BASCustomTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASCustomTableView.h; sourceTree = "<group>"; };
@@ -695,6 +701,8 @@
 		A5955E8E1A077DA800CA63F4 /* Statistics */ = {
 			isa = PBXGroup;
 			children = (
+				32D2215E1A44414600D6E39F /* hd_movement_on_clients@2x.png */,
+				32D2215F1A44414600D6E39F /* hd_rating@2x.png */,
 				A5955EC41A07941900CA63F4 /* BgS1@2x.png */,
 				A5955EC51A07941900CA63F4 /* BgS2@2x.png */,
 				A5955EC61A07941900CA63F4 /* BgS3@2x.png */,
@@ -1100,6 +1108,7 @@
 		A59FBB07197A5657006F3764 /* Orders */ = {
 			isa = PBXGroup;
 			children = (
+				BFD1EA2F1AC5AE3700215ADD /* btn_cancellation@2x.png */,
 				A5C2246E19B9CE3600FF2ACE /* cross_act@2x.png */,
 				A5C2246F19B9CE3600FF2ACE /* tick_act@2x.png */,
 				A5A22FD8198B7F1D0053FC16 /* search_s@2x.png */,
@@ -1583,6 +1592,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5955EA31A077DA800CA63F4 /* button_movement_of_customers@2x.png in Resources */,
+				32D221611A44414600D6E39F /* hd_rating@2x.png in Resources */,
 				A5955ED31A07970600CA63F4 /* BgAll2@2x.png in Resources */,
 				A59FBB36197A5657006F3764 /* bg_inactive@2x.png in Resources */,
 				A5955EC91A07941900CA63F4 /* BgS1@2x.png in Resources */,
@@ -1664,6 +1674,7 @@
 				A59FBB51197A5657006F3764 /* oclock_yelow@2x.png in Resources */,
 				A59FBB3D197A5657006F3764 /* door@2x.png in Resources */,
 				A59FBB62197A5657006F3764 /* nav_bar_horiz_bg@2x.png in Resources */,
+				32D221601A44414600D6E39F /* hd_movement_on_clients@2x.png in Resources */,
 				A5C2246D19B9A66200FF2ACE /* door_vert@2x.png in Resources */,
 				A59FBB70197A5657006F3764 /* button_video_m.png in Resources */,
 				A59FBB81197A5657006F3764 /* btn_tick_s@2x.png in Resources */,
@@ -1682,6 +1693,7 @@
 				A59FBB7D197A5657006F3764 /* buttton_podano@2x.png in Resources */,
 				A59B5548197D413700A80E3F /* halls_btn_edit@2x.png in Resources */,
 				A59B54FC197D1B7800A80E3F /* small_cell@2x.png in Resources */,
+				BFD1EA301AC5AE3700215ADD /* btn_cancellation@2x.png in Resources */,
 				A5955EA61A077DA800CA63F4 /* button_revenue_s@2x.png in Resources */,
 				A59FBB4A197A5657006F3764 /* cell_pasta@2x.png in Resources */,
 				A5955EA81A077DA800CA63F4 /* button_salary_s@2x.png in Resources */,
@@ -1971,8 +1983,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Irina Sobianina (2W8J43PA8X)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Irina Sobianina (2W8J43PA8X)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RestrauntSystemPad/RestrauntSystemPad-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1983,7 +1995,7 @@
 				INFOPLIST_FILE = "RestrauntSystemPad/RestrauntSystemPad-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "62a5395a-5d73-4dd9-a70c-44043959b07d";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1993,8 +2005,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Irina Sobianina (UE7X5T289N)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Irina Sobianina (UE7X5T289N)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RestrauntSystemPad/RestrauntSystemPad-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -2005,7 +2017,7 @@
 				INFOPLIST_FILE = "RestrauntSystemPad/RestrauntSystemPad-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "62a5395a-5d73-4dd9-a70c-44043959b07d";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

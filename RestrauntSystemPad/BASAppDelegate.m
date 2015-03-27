@@ -22,6 +22,7 @@
 @property(nonatomic,assign)   int vibrateCount;
 @property (nonatomic, retain) NSTimer * vibrateTimer;
 
+
 @end
 
 @implementation BASAppDelegate

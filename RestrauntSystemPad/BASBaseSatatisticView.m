@@ -337,6 +337,29 @@
             
             
             orignY = _add1Label.frame.origin.y + _add1Label.frame.size.height + 10.f;
+            
+        }else if(_type == customer_rating){
+            [self addSubview:_dataFromLabel];
+            [self addSubview:_dataFromButton];
+            
+            [self addSubview:_dataToLabel];
+            [self addSubview:_dataToButton];
+            [self addSubview:_datePickerFrom];
+            [self addSubview:_datePickerTo];
+            
+            orignY = _dataToLabel.frame.origin.y + _dataToLabel.frame.size.height + 10.f;
+            
+        }else if(_type == movement_of_customers){
+            [self addSubview:_dataFromLabel];
+            [self addSubview:_dataFromButton];
+            
+            [self addSubview:_dataToLabel];
+            [self addSubview:_dataToButton];
+            [self addSubview:_datePickerFrom];
+            [self addSubview:_datePickerTo];
+            
+            orignY = _dataToLabel.frame.origin.y + _dataToLabel.frame.size.height + 10.f;
+            
         }else if(_type == infograph){
   
 
@@ -705,6 +728,10 @@
         image = [UIImage imageNamed:@"hd_list_of_staff"];
     }else if(_type == salary){
         image = [UIImage imageNamed:@"hd_salary"];
+    }else if(_type ==  customer_rating){
+        image = [UIImage imageNamed:@"hd_rating"];
+    }else if(_type ==  movement_of_customers ){
+        image = [UIImage imageNamed:@"hd_movement_on_clients"];
     }
     return  image;
 }
@@ -735,6 +762,10 @@
         image = [UIImage imageNamed:@"hd_list_of_staff"];
     }else if(_type == salary){
         image = [UIImage imageNamed:@"hd_salary"];
+    }else if(_type ==  customer_rating){
+        image = [UIImage imageNamed:@"hd_rating"];
+    }else if(_type ==  movement_of_customers ){
+        image = [UIImage imageNamed:@"hd_movement_on_clients"];
     }
     return  image.size.width;
 }
@@ -859,6 +890,21 @@
                   @"id_job":valueAdd1,
                   @"id_employee":valueAdd2
                   };
+        
+    }else if(_type ==  customer_rating ){
+        command = @"GETCLIENTSRANKINGS";
+        param = @{@"date_from":[NSString stringWithFormat:@"%@",[_parent stringFromDate:fromDate withState:YES]],
+                  @"date_to":[NSString stringWithFormat:@"%@",[_parent stringFromDate:toDate withState:YES]]
+                      };
+        
+    }else if(_type ==  movement_of_customers ){
+        
+        command = @"GETCLIENTSFLOWS";
+        param = @{@"date_from":[NSString stringWithFormat:@"%@",[_parent stringFromDate:fromDate withState:YES]],
+                  @"date_to":[NSString stringWithFormat:@"%@",[_parent stringFromDate:toDate withState:YES]],
+                  @"id_client":valueAdd1
+                      };
+        
     }else if(_type == infograph){
         command = @"GETINFOGRAPHICS";
         param = @{@"date_from":[NSString stringWithFormat:@"%@",[_parent stringFromDate:fromDate withState:YES]],

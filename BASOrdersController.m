@@ -25,6 +25,7 @@
     NSInteger id_table;
     NSInteger id_waiter;
     SortState sortState;
+    
 }
 
 
@@ -77,7 +78,7 @@
     searchDate = [NSDate date];
     sortState = ALLORDERSBYTABLE;
     
-    self.datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(5.f, 65.f, 330.f, 150.f)];
+    self.datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(5.f, 75.f, 380.f, 150.f)];
     [_datePicker addTarget:self action:@selector(pickerChanged:)forControlEvents:UIControlEventValueChanged];
     _datePicker.datePickerMode = UIDatePickerModeDate;
     [_datePicker setDate:searchDate];
@@ -85,7 +86,7 @@
     [self.view addSubview:_datePicker];
     [_datePicker setHidden:YES];
     
-    self.pickerSort = [[UIPickerView alloc]initWithFrame:CGRectMake(5.f, 65.f, 330.f, 150.f)];
+    self.pickerSort = [[UIPickerView alloc]initWithFrame:CGRectMake(5.f, 75.f, 380.f, 150.f)];
     
     self.pickerSort.dataSource = (id)self;
     self.pickerSort.delegate = (id)self;
@@ -96,7 +97,7 @@
     
     [_sortView removeFromSuperview];
     self.sortView = nil;
-    self.sortView = [[BASSortView alloc]initWithFrame:CGRectMake(5.f, 10.f, 345.f, 75.f)];
+    self.sortView = [[BASSortView alloc]initWithFrame:CGRectMake(5.f, 5.f, 390.f, 90.f)];
     _sortView.dateString = [self stringFromDate:searchDate withState:NO];
     _sortView.delegate = (id)self;
     [self.view addSubview:_sortView];
@@ -112,7 +113,7 @@
     [_separatorView removeFromSuperview];
     self.separatorView = nil;
     self.separatorView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"delimiter_long.png"]];
-    [_separatorView setFrame:CGRectMake(340.f, 0, 2.f, self.view.frame.size.height - 56.f)];
+    [_separatorView setFrame:CGRectMake(400.f, 0, 2.f, self.view.frame.size.height - 56.f)];
     [self.view addSubview:_separatorView];
     [self getPikerList];
     [self getData];
@@ -273,7 +274,7 @@
 
 - (void)prepareView{
     
-    CGRect frame = CGRectMake(10.f, 75.f, 320.f, self.view.frame.size.height - 56.f - 75.f);
+    CGRect frame = CGRectMake(10.f, 75.f, 380.f, self.view.frame.size.height - 56.f - 75.f);
     
     [_sortView setHidden:NO];
     
@@ -337,8 +338,9 @@
             _contentTableView.delegate = (id)self;
             [_contentTableView setBackgroundColor:[UIColor clearColor]];
             [self.view addSubview:_contentTableView];
-            
+         //   NSLog(@"%@",_contentData);
             dict = (NSDictionary*)[_contentData objectAtIndex:index];
+         //   NSLog(@"%@",dict);
             NSDictionary* employee = (NSDictionary*)[dict objectForKey:@"employee"];
             NSNumber* number_table = (NSNumber*)[dict objectForKey:@"number_table"];
             dict = (NSDictionary*)[param objectAtIndex:0];
@@ -353,6 +355,7 @@
             self.infoView = nil;
             self.infoView = [[BASInfoView alloc]initWithFrame:CGRectMake(1024.f - 260.f, 55.f, 239.f, 176.f) withContent:dict];
             [self.view addSubview:_infoView];
+            
         }
 
     }failure:^(NSString *error) {
@@ -409,7 +412,7 @@
 
         [manager getData:[manager formatRequest:command withParam:dict] success:^(id responseObject) {
             
-            NSLog(@"Response: %@",responseObject);
+          //  NSLog(@"Response: %@",responseObject);
             NSArray* param = (NSArray*)[responseObject objectForKey:@"param"];
             
             if(param != nil && param.count > 0){
@@ -452,6 +455,7 @@
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
+    TheApp;
     CGRect frame;
     NSMutableArray* result = [NSMutableArray new];
     NSMutableArray* tablesList = [NSMutableArray new];
@@ -469,7 +473,7 @@
         if(alertView.cancelButtonIndex != buttonIndex){
             switch (buttonIndex) {
                 case 0:
-                    frame = CGRectMake(1024.f / 2 - 190.f, 768.f / 2 - 200.f, 380.f, 280.f);
+                    frame = CGRectMake(1024.f / 2 - 190.f, 768.f / 2 - 200.f, 470.f, 280.f);
                     for(NSDictionary* obj in _emptyList){
                         NSArray* tables = (NSArray*)[obj objectForKey:@"tables"];
                         for(NSDictionary* tbl in tables){
@@ -497,13 +501,13 @@
                     }
                     self.waiterTemplate = [NSArray arrayWithArray:waitersList];
                     [result addObject:waitersNameList];
-                    self.pickeView = [[BASPickerView alloc]initWithFrame:frame withContent:[NSArray arrayWithArray:result] withDoneButton:YES];
+                    self.pickeView = [[BASPickerView alloc]initWithFrame:frame withContent:[NSArray arrayWithArray:result] withDoneButton:YES withCancelButton:YES];
                     self.pickeView.delegate = (id)self;
                     [self.view addSubview:_pickeView];
                     [self.view bringSubviewToFront:_pickeView];
                     [_pickeView selectRow:0 inComponent:0];
                     [_pickeView selectRow:0 inComponent:1];
-                    
+                    app.isBusy = YES;
                     break;
                 case 1:
                     moveDict = @{
@@ -530,7 +534,7 @@
                         }
                         self.orderTemplate = [NSArray arrayWithArray:tablesList];
                         [result addObject:tablesNameList];
-                        self.pickeView = [[BASPickerView alloc]initWithFrame:frame withContent:[NSArray arrayWithArray:result] withDoneButton:YES];
+                        self.pickeView = [[BASPickerView alloc]initWithFrame:frame withContent:[NSArray arrayWithArray:result] withDoneButton:YES withCancelButton:NO];
                         self.pickeView.delegate = (id)self;
                         [self.view addSubview:_pickeView];
                         [self.view bringSubviewToFront:_pickeView];
@@ -557,6 +561,8 @@
 #pragma mark - BASPickerView delegate methods
 - (void)doneClicked:(BASPickerView*)view withData:(NSDictionary*)data{
     
+    TheApp;
+    app.isBusy = NO;
     [_pickeView removeFromSuperview];
     self.pickeView = nil;
     
@@ -657,15 +663,17 @@
     
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(tableView == _tableView){
-        [_pickeView removeFromSuperview];
-        self.pickeView = nil;
-        index = [indexPath row];
-        NSDictionary* dict = (NSDictionary*)[_contentData objectAtIndex:[indexPath row]];
-        NSNumber* id_order = (NSNumber*)[dict objectForKey:@"id_order"];
-        [self getOrderList:id_order];
+    TheApp;
+    if(!app.isBusy){
+        if(tableView == _tableView){
+            [_pickeView removeFromSuperview];
+            self.pickeView = nil;
+            index = [indexPath row];
+            NSDictionary* dict = (NSDictionary*)[_contentData objectAtIndex:[indexPath row]];
+            NSNumber* id_order = (NSNumber*)[dict objectForKey:@"id_order"];
+            [self getOrderList:id_order];
+        }
     }
-
 }
 #pragma mark -
 #pragma mark UIPickerView  methods

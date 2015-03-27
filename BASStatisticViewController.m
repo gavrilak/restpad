@@ -129,7 +129,20 @@
                   @"id_job":[NSNumber numberWithInt:-1],
                   @"id_employee":[NSNumber numberWithInt:-1]
                   };
-
+   /* }else if(_type ==  customer_rating ){
+        previous = [NSDate dateWithTimeIntervalSinceNow: -(60.0f*60.0f*720.f)];
+        command = @"GETCLIENTSRANKINGS";
+        param = @{@"date_from":[NSString stringWithFormat:@"%@",[self stringFromDate:previous withState:YES]],
+                  @"date_to":[NSString stringWithFormat:@"%@",[self stringFromDate:date withState:YES]]
+                  };
+    }else if(_type ==  movement_of_customers ){
+        previous = [NSDate dateWithTimeIntervalSinceNow: -(60.0f*60.0f*720.f)];
+        command = @"GETCLIENTSFLOWS";
+        param = @{@"date_from":[NSString stringWithFormat:@"%@",[self stringFromDate:previous withState:YES]],
+                  @"date_to":[NSString stringWithFormat:@"%@",[self stringFromDate:date withState:YES]],
+                  @"id_client":[NSNumber numberWithInt:-1]
+                  };*/
+        
     }else if(_type == infograph){
         previous = [NSDate dateWithTimeIntervalSinceNow: -(60.0f*60.0f*336.f)];
         command = @"GETINFOGRAPHICS";

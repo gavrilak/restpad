@@ -46,7 +46,7 @@
 @property (nonatomic, strong) NSArray* employeesList;
 @property (nonatomic, strong) NSArray* dishesList;
 @property (nonatomic, strong) NSArray* menuList;
-
+@property (nonatomic, assign) BOOL isBusy;
 @property(nonatomic, strong) UIPopoverController *popover;
 
 - (NSArray*)sortContent:(NSArray*)source withType:(SwitchType)type;

@@ -49,7 +49,7 @@
         self.imageView = [[UIImageView alloc]initWithFrame:CGRectMake(bgImg.frame.origin.x + 5.f, bgImg.frame.origin.y + 5.f, bgImg.frame.size.width - 10.f, bgImg.frame.size.height - 10.f)];
         [_imageView setBackgroundColor:[UIColor clearColor]];
 
-        NSString* link = [NSString stringWithFormat:@"%@/%@",HTTP,(NSString*)[contentData objectForKey:@"descr_link"]];
+        NSString* link = [contentData objectForKey:@"descr_link"];
         [_imageView setImageWithURL:[NSURL URLWithString:link] placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
         [_scrollView addSubview:_imageView];
         [_scrollView addSubview:bgImg];
