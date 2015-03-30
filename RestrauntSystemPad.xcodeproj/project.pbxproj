@@ -121,7 +121,6 @@
 		A59FBB34197A5657006F3764 /* bg_all@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A59FBAC8197A5656006F3764 /* bg_all@2x.png */; };
 		A59FBB35197A5657006F3764 /* bg_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A59FBAC9197A5656006F3764 /* bg_active@2x.png */; };
 		A59FBB36197A5657006F3764 /* bg_inactive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A59FBACA197A5656006F3764 /* bg_inactive@2x.png */; };
-		A59FBB37197A5657006F3764 /* current_orders_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A59FBACB197A5656006F3764 /* current_orders_bg@2x.png */; };
 		A59FBB38197A5657006F3764 /* frame.png in Resources */ = {isa = PBXBuildFile; fileRef = A59FBACC197A5656006F3764 /* frame.png */; };
 		A59FBB39197A5657006F3764 /* frame@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A59FBACD197A5656006F3764 /* frame@2x.png */; };
 		A59FBB3B197A5657006F3764 /* bar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A59FBAD0197A5656006F3764 /* bar@2x.png */; };
@@ -1556,7 +1555,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = BAS;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0620;
 				ORGANIZATIONNAME = BestAppStudio;
 				TargetAttributes = {
 					A59FBA84197A5463006F3764 = {
@@ -1746,7 +1745,6 @@
 				A59BFA53198144E500BAD071 /* delete@2x.png in Resources */,
 				A59FBB84197A5657006F3764 /* table_busy_lenta@2x.png in Resources */,
 				A59FBB75197A5657006F3764 /* cell_order_inactive@2x.png in Resources */,
-				A59FBB37197A5657006F3764 /* current_orders_bg@2x.png in Resources */,
 				A59FBA93197A5463006F3764 /* InfoPlist.strings in Resources */,
 				A5955EA51A077DA800CA63F4 /* button_revenue@2x.png in Resources */,
 				A5955EA91A077DA800CA63F4 /* button_sales_rankings@2x.png in Resources */,

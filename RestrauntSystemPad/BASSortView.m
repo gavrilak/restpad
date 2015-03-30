@@ -54,7 +54,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        CGRect frame= self.frame;
+        
         [self setBackgroundColor:[UIColor clearColor]];
         UIImage* image = [UIImage imageNamed:@"small_cell.png"];
         

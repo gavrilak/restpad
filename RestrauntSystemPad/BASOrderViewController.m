@@ -94,7 +94,7 @@
     [cell hideUtilityButtonsAnimated:YES];
      BASManager* manager = [BASManager sharedInstance];
     
-    NSDictionary* dict = (NSDictionary*)[_dishesContent objectAtIndex:_index];
+    NSDictionary* dict = [[NSDictionary alloc] init];
     NSDictionary* data = ((UMTableViewCell*)cell).contentData;
 
     dict = @{

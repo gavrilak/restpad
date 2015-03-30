@@ -197,7 +197,7 @@
 
 #pragma mark - Actions
 - (void)modificatClicked{
-    if ([self.delegate respondsToSelector:@selector(modificationDish:)]) {
+   if ([self.delegate respondsToSelector:@selector(modificationDish:)]) {
         
         [self.delegate modificationDish:self.dishIdx];
     }

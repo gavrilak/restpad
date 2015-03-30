@@ -131,4 +131,13 @@
         [_delegate doneClicked:self withData:dict];
     }
 }
+
+
+-(void) clikedCancelButton:(id)sender{
+    
+   
+    if([self.delegate respondsToSelector:@selector(cancelClicked:)]){
+        [_delegate cancelClicked:self ];
+    }
+}
 @end

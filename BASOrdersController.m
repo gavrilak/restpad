@@ -26,6 +26,7 @@
     NSInteger id_waiter;
     SortState sortState;
     
+    
 }
 
 
@@ -327,6 +328,7 @@
                              };
                     [temp addObject:dict];
                 }
+                NSLog(@"count dish %d",count_dish.intValue);
             }
             self.subContentData = [NSArray arrayWithArray:temp];
             CGRect frame = CGRectMake(_separatorView.frame.origin.x + _separatorView.frame.size.width + 20.f, 20.f, 320.f, 768.f - 140.f);
@@ -372,19 +374,17 @@
 {
     [cell hideUtilityButtonsAnimated:YES];
     
-    NSString* command = nil;
     BASManager* manager = [BASManager sharedInstance];
     
     NSDictionary* dict = (NSDictionary*)[_contentData objectAtIndex:index];
     NSNumber* status = (NSNumber*)[dict objectForKey:@"status"];
-    NSDictionary* data = ((UMTableViewCell*)cell).contentData;
-    
+    moveDict = ((UMTableViewCell*)cell).contentData;
     if([status intValue] == 0){
   
         [self getPikerList];
         switch (_index) {
             case 0:{
-                moveDict = ((UMTableViewCell*)cell).contentData;
+         
                 self.choiceAlertView = nil;
                 if(tablesCount > 1){
                     self.choiceAlertView = [[UIAlertView alloc]initWithTitle:@"" message:@"Переместить блюдо на стол:" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Новый",@"Виртуальный",@"Текущий",@"Отмена", nil];
@@ -398,11 +398,11 @@
             }
                 break;
             case 1:{
-                command = @"REMOVEORDERELEMENT";
-                dict = @{
-                         @"id_order": (NSNumber*)[data objectForKey:@"id_order"],
-                         @"id_dish_order": (NSNumber*)[data objectForKey:@"id_dish_order"],
-                         };
+                UIAlertView* alert=  [[UIAlertView alloc]initWithTitle:@"" message:@"Удалить блюдо?" delegate:self cancelButtonTitle:@"Heт" otherButtonTitles :@"Да",nil];
+                alert.tag = 101;
+                [alert show];
+                
+                return;
             }
                 break;
            
@@ -410,21 +410,7 @@
                 break;
         }
 
-        [manager getData:[manager formatRequest:command withParam:dict] success:^(id responseObject) {
-            
-          //  NSLog(@"Response: %@",responseObject);
-            NSArray* param = (NSArray*)[responseObject objectForKey:@"param"];
-            
-            if(param != nil && param.count > 0){
-                NSDictionary* dict = (NSDictionary*)[_contentData objectAtIndex:index];
-                NSNumber* id_order = (NSNumber*)[dict objectForKey:@"id_order"];
-                [self getOrderList:id_order];
-            }
-                
-
-        } failure:^(NSString *error) {
-            [manager showAlertViewWithMess:ERROR_MESSAGE];
-        }];
+        
     } else {
         [manager showAlertViewWithMess:@"Данная операция невозможна"];
     }
@@ -463,12 +449,37 @@
     NSMutableArray* waitersList = [NSMutableArray new];
     NSMutableArray* waitersNameList = [NSMutableArray new];
     NSNumber* cutTable = nil;
-    
+    BASManager* manager = [BASManager sharedInstance];
     [_pickeView removeFromSuperview];
     self.pickeView = nil;
     
-    
-    if(alertView == _choiceAlertView){
+    if(alertView.tag ==  101) {
+        if(alertView.cancelButtonIndex != buttonIndex){
+
+            NSString* command = @"REMOVEORDERELEMENT";
+            NSDictionary* dict = @{
+                                   @"id_order": (NSNumber*)[moveDict objectForKey:@"id_order"],
+                                   @"id_dish_order": (NSNumber*)[moveDict objectForKey:@"id_dish_order"],
+                                   };
+            [manager getData:[manager formatRequest:command withParam:dict] success:^(id responseObject) {
+            
+                //  NSLog(@"Response: %@",responseObject);
+                NSArray* param = (NSArray*)[responseObject objectForKey:@"param"];
+            
+                if(param != nil && param.count > 0){
+                    NSDictionary* dict = (NSDictionary*)[_contentData objectAtIndex:index];
+                    NSNumber* id_order = (NSNumber*)[dict objectForKey:@"id_order"];
+                    [self getOrderList:id_order];
+                }
+            
+            
+                } failure:^(NSString *error) {
+                [manager showAlertViewWithMess:ERROR_MESSAGE];
+                }];
+            }
+
+    } else {
+        if(alertView == _choiceAlertView){
         choiceIndex = buttonIndex;
         if(alertView.cancelButtonIndex != buttonIndex){
             switch (buttonIndex) {
@@ -557,6 +568,7 @@
             [self moveToTable];
         }
     }
+    }
 }
 #pragma mark - BASPickerView delegate methods
 - (void)doneClicked:(BASPickerView*)view withData:(NSDictionary*)data{
@@ -594,6 +606,15 @@
     
     
 }
+
+- (void)cancelClicked:(BASPickerView*)view {
+    
+    TheApp;
+    app.isBusy = NO;
+    [_pickeView removeFromSuperview];
+    
+}
+
 #pragma mark -
 #pragma mark BASSortView delegate methods
 - (void)sortChoice:(BASSortView*)view withType:(SortState)type{

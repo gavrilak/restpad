@@ -28,4 +28,7 @@
 - (void)didSelect:(BASPickerView*)view withRow:(NSInteger)row withComponent:(NSInteger)component;
 - (void)doneClicked:(BASPickerView*)view withData:(NSDictionary*)data;
 
+@optional
+- (void)cancelClicked:(BASPickerView*)view;
+
 @end
