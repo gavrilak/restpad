@@ -789,11 +789,12 @@
 
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    
-    if ((scrollView.contentOffset.y + scrollView.frame.size.height) >= self.tableView.contentSize.height - scrollView.frame.size.height/2) {
-        if (!self.loadingData) {
-            [self addSortDataFromServer];
-            NSLog(@"%f , %f,  %f",scrollView.contentOffset.y,scrollView.frame.size.height , self.tableView.contentSize.height);
+    if (scrollView == self.tableView){
+        if ((scrollView.contentOffset.y + scrollView.frame.size.height) >= self.tableView.contentSize.height - scrollView.frame.size.height/2) {
+            if (!self.loadingData) {
+                [self addSortDataFromServer];
+                NSLog(@"%f , %f,  %f",scrollView.contentOffset.y,scrollView.frame.size.height , self.tableView.contentSize.height);
+            }
         }
     }
 }
