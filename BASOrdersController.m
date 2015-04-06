@@ -207,8 +207,8 @@
     sortState = ALLORDERS;
     
     params =  [NSDictionary dictionaryWithObjectsAndKeys:
-              [NSNumber numberWithInteger:0] ,@"offset",
-              [NSNumber numberWithInteger:20] ,@"count",
+              [NSNumber numberWithInteger:1] ,@"offset",
+              [NSNumber numberWithInteger:19] ,@"count",
               nil];
     
     [manager getData:[manager formatRequest:@"GETALLORDERS" withParam:params] success:^(id responseObject) {
@@ -245,7 +245,7 @@
                 command = @"GETALLORDERS";
                 params =  [NSDictionary dictionaryWithObjectsAndKeys:
                            [NSNumber numberWithInteger:[self.contentData count]+1] ,@"offset",
-                           [NSNumber numberWithInteger:20] ,@"count",
+                           [NSNumber numberWithInteger:19] ,@"count",
                            nil];
                 break;
             case ALLORDERSBYDATE:
@@ -253,7 +253,7 @@
                 params =  [NSDictionary dictionaryWithObjectsAndKeys:
                           [NSString stringWithFormat:@"%@",[self stringFromDate:searchDate withState:YES]] ,@"date",
                           [NSNumber numberWithInteger:[self.contentData count]+1] ,@"offset",
-                          [NSNumber numberWithInteger:20] ,@"count",
+                          [NSNumber numberWithInteger:19] ,@"count",
                            nil];
                 break;
             case ALLORDERSBYTABLE:
@@ -261,7 +261,7 @@
                 params =  [NSDictionary dictionaryWithObjectsAndKeys:
                           [NSNumber numberWithInteger:id_table] ,@"id_table",
                           [NSNumber numberWithInteger:[self.contentData count]+1] ,@"offset",
-                          [NSNumber numberWithInteger:20] ,@"count",
+                          [NSNumber numberWithInteger:19] ,@"count",
                           nil];
                 break;
             case ALLORDERSBYEMPLOYEE:
@@ -269,7 +269,7 @@
                 params =  [NSDictionary dictionaryWithObjectsAndKeys:
                           [NSNumber numberWithInteger:id_waiter] ,@"id_employee",
                           [NSNumber numberWithInteger:[self.contentData count]+1] ,@"offset",
-                          [NSNumber numberWithInteger:20] ,@"count",
+                          [NSNumber numberWithInteger:19] ,@"count",
                          nil];
                 break;
                 
@@ -316,24 +316,24 @@
             command = @"GETALLORDERSBYDATE";
             param =  [NSDictionary dictionaryWithObjectsAndKeys:
                          [NSString stringWithFormat:@"%@",[self stringFromDate:searchDate withState:YES]] ,@"date",
-                      [NSNumber numberWithInteger:0] ,@"offset",
-                      [NSNumber numberWithInteger:20] ,@"count",
+                      [NSNumber numberWithInteger:1] ,@"offset",
+                      [NSNumber numberWithInteger:19] ,@"count",
                          nil];
             break;
         case ALLORDERSBYTABLE:
             command = @"GETALLORDERSBYTABLE";
             param =  [NSDictionary dictionaryWithObjectsAndKeys:
                       [NSNumber numberWithInteger:id_table] ,@"id_table",
-                      [NSNumber numberWithInteger:0] ,@"offset",
-                      [NSNumber numberWithInteger:20] ,@"count",
+                      [NSNumber numberWithInteger:1] ,@"offset",
+                      [NSNumber numberWithInteger:19] ,@"count",
                       nil];
             break;
         case ALLORDERSBYEMPLOYEE:
             command = @"GETALLORDERSBYEMPLOYEE";
             param =  [NSDictionary dictionaryWithObjectsAndKeys:
                       [NSNumber numberWithInteger:id_waiter] ,@"id_employee",
-                      [NSNumber numberWithInteger:0] ,@"offset",
-                      [NSNumber numberWithInteger:20] ,@"count",
+                      [NSNumber numberWithInteger:1] ,@"offset",
+                      [NSNumber numberWithInteger:19] ,@"count",
                       nil];
             break;
             
@@ -793,7 +793,7 @@
         if ((scrollView.contentOffset.y + scrollView.frame.size.height) >= self.tableView.contentSize.height - scrollView.frame.size.height/2) {
             if (!self.loadingData) {
                 [self addSortDataFromServer];
-                NSLog(@"%f , %f,  %f",scrollView.contentOffset.y,scrollView.frame.size.height , self.tableView.contentSize.height);
+               // NSLog(@"%f , %f,  %f",scrollView.contentOffset.y,scrollView.frame.size.height , self.tableView.contentSize.height);
             }
         }
     }
