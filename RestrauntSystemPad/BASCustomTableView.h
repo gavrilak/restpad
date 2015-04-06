@@ -14,7 +14,9 @@
 
 @property (nonatomic,assign)TableType typeTable;
 
+@property (nonatomic,strong)NSArray* contentData;
 - (id)initWithFrame:(CGRect)frame style:(UITableViewStyle)style withContent:(NSArray*) content withType:(TableType)type withDelegate:(id) delegate;
 - (CGFloat)hightCell:(TableType)type;
+
 
 @end

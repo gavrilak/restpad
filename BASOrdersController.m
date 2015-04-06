@@ -30,7 +30,7 @@
 }
 
 
-@property (nonatomic,strong) NSArray *contentData;
+@property (nonatomic,strong) NSMutableArray *contentData;
 @property (nonatomic,strong) NSArray *subContentData;
 @property (nonatomic,strong) NSArray *emptyList;
 @property (nonatomic,strong) NSArray *orderList;
@@ -50,6 +50,7 @@
 @property (nonatomic,strong) BASPickerView* pickeView;
 @property (nonatomic, strong)UIDatePicker *datePicker;
 @property (nonatomic,strong) UIPickerView *pickerSort;
+@property (nonatomic, assign) BOOL loadingData;
 
 @end
 
@@ -197,19 +198,26 @@
         [manager showAlertViewWithMess:ERROR_MESSAGE];
     }];
 }
+
 - (void)getData{
  
     TheApp;
     BASManager* manager = [BASManager sharedInstance];
-
+    NSDictionary *params = nil;
+    sortState = ALLORDERS;
     
-    [manager getData:[manager formatRequest:@"GETALLORDERS" withParam:nil] success:^(id responseObject) {
+    params =  [NSDictionary dictionaryWithObjectsAndKeys:
+              [NSNumber numberWithInteger:0] ,@"offset",
+              [NSNumber numberWithInteger:20] ,@"count",
+              nil];
+    
+    [manager getData:[manager formatRequest:@"GETALLORDERS" withParam:params] success:^(id responseObject) {
         
-        NSLog(@"Response: %@",responseObject);
+       // NSLog(@"Response: %@",responseObject);
         NSArray* param = (NSArray*)[responseObject objectForKey:@"param"];
         
         if(param != nil && param.count > 0){
-            self.contentData = [NSArray arrayWithArray:param];
+            self.contentData = [NSMutableArray arrayWithArray:param];
             [app.virtualView removeFromSuperview];
             app.virtualView = nil;
             app.virtualView = [[BASVirtualTableView alloc]initWithFrame:CGRectMake(1024.f - 125.5f, 768.f - 290.f, 125.5f, 168.f)];
@@ -222,6 +230,82 @@
         [manager showAlertViewWithMess:ERROR_MESSAGE];
     }];
 }
+
+- (void)addSortDataFromServer {
+    
+    BASManager* manager = [BASManager sharedInstance];
+    
+    if (self.loadingData != YES) {
+        
+        self.loadingData = YES;
+        NSDictionary *params = nil;
+        NSString* command = nil;
+        switch (sortState){
+                case ALLORDERS:
+                command = @"GETALLORDERS";
+                params =  [NSDictionary dictionaryWithObjectsAndKeys:
+                           [NSNumber numberWithInteger:[self.contentData count]+1] ,@"offset",
+                           [NSNumber numberWithInteger:20] ,@"count",
+                           nil];
+                break;
+            case ALLORDERSBYDATE:
+                command = @"GETALLORDERSBYDATE";
+                params =  [NSDictionary dictionaryWithObjectsAndKeys:
+                          [NSString stringWithFormat:@"%@",[self stringFromDate:searchDate withState:YES]] ,@"date",
+                          [NSNumber numberWithInteger:[self.contentData count]+1] ,@"offset",
+                          [NSNumber numberWithInteger:20] ,@"count",
+                           nil];
+                break;
+            case ALLORDERSBYTABLE:
+                command = @"GETALLORDERSBYTABLE";
+                params =  [NSDictionary dictionaryWithObjectsAndKeys:
+                          [NSNumber numberWithInteger:id_table] ,@"id_table",
+                          [NSNumber numberWithInteger:[self.contentData count]+1] ,@"offset",
+                          [NSNumber numberWithInteger:20] ,@"count",
+                          nil];
+                break;
+            case ALLORDERSBYEMPLOYEE:
+                command = @"GETALLORDERSBYEMPLOYEE";
+                params =  [NSDictionary dictionaryWithObjectsAndKeys:
+                          [NSNumber numberWithInteger:id_waiter] ,@"id_employee",
+                          [NSNumber numberWithInteger:[self.contentData count]+1] ,@"offset",
+                          [NSNumber numberWithInteger:20] ,@"count",
+                         nil];
+                break;
+                
+            default:
+                break;
+        }
+
+        NSLog(@"@%lu, %@",(unsigned long)[self.contentData count], command);
+        [manager getData:[manager formatRequest:command withParam:params] success:^(id responseObject) {
+            
+            NSArray* param = (NSArray*)[responseObject objectForKey:@"param"];
+            if(param != nil && param.count > 0){
+                
+                [self.contentData   addObjectsFromArray:param];
+                NSMutableArray* newPaths = [NSMutableArray array];
+                for (int i = (int)[self.contentData count] - (int)[param count]; i < [self.contentData count]; i++) {
+                    [newPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+                }
+                self.tableView.contentData = self.contentData;
+                [self.tableView beginUpdates];
+                [self.tableView insertRowsAtIndexPaths:newPaths withRowAnimation:UITableViewRowAnimationNone];
+                [self.tableView endUpdates];
+                
+               
+            }
+            self.loadingData = NO;
+        } failure:^(NSString *error) {
+            [manager showAlertViewWithMess:ERROR_MESSAGE];
+            self.loadingData = NO;
+        }];
+        
+        
+    }
+}
+
+
 - (void)getSortData:(SortState)state{
     
     BASManager* manager = [BASManager sharedInstance];
@@ -232,18 +316,24 @@
             command = @"GETALLORDERSBYDATE";
             param =  [NSDictionary dictionaryWithObjectsAndKeys:
                          [NSString stringWithFormat:@"%@",[self stringFromDate:searchDate withState:YES]] ,@"date",
+                      [NSNumber numberWithInteger:0] ,@"offset",
+                      [NSNumber numberWithInteger:20] ,@"count",
                          nil];
             break;
         case ALLORDERSBYTABLE:
             command = @"GETALLORDERSBYTABLE";
             param =  [NSDictionary dictionaryWithObjectsAndKeys:
                       [NSNumber numberWithInteger:id_table] ,@"id_table",
+                      [NSNumber numberWithInteger:0] ,@"offset",
+                      [NSNumber numberWithInteger:20] ,@"count",
                       nil];
             break;
         case ALLORDERSBYEMPLOYEE:
             command = @"GETALLORDERSBYEMPLOYEE";
             param =  [NSDictionary dictionaryWithObjectsAndKeys:
                       [NSNumber numberWithInteger:id_waiter] ,@"id_employee",
+                      [NSNumber numberWithInteger:0] ,@"offset",
+                      [NSNumber numberWithInteger:20] ,@"count",
                       nil];
             break;
             
@@ -258,7 +348,7 @@
         NSArray* param = (NSArray*)[responseObject objectForKey:@"param"];
         
         if(param != nil && param.count > 0){
-            self.contentData = [NSArray arrayWithArray:param];
+            self.contentData = [NSMutableArray arrayWithArray:param];
             if(_contentData.count > 0){
                 [self prepareView];
             }
@@ -693,6 +783,17 @@
             NSDictionary* dict = (NSDictionary*)[_contentData objectAtIndex:[indexPath row]];
             NSNumber* id_order = (NSNumber*)[dict objectForKey:@"id_order"];
             [self getOrderList:id_order];
+        }
+    }
+}
+
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    
+    if ((scrollView.contentOffset.y + scrollView.frame.size.height) >= self.tableView.contentSize.height - scrollView.frame.size.height/2) {
+        if (!self.loadingData) {
+            [self addSortDataFromServer];
+            NSLog(@"%f , %f,  %f",scrollView.contentOffset.y,scrollView.frame.size.height , self.tableView.contentSize.height);
         }
     }
 }

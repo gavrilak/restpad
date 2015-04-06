@@ -19,7 +19,6 @@
 @interface BASCustomTableView()
 
 
-@property (nonatomic,strong)NSArray* contentData;
 @property (nonatomic, assign)id <RCSDishCellItemDelegate> delegateDish;
 
 
