@@ -96,8 +96,8 @@
             }
             [self.contentView addSubview:self.finishTime];
             
-            NSNumber* id_job = (NSNumber*)[_contentData objectForKey:@"id_job"];
-            if([id_job integerValue] != 1 ){
+           // NSNumber* id_job = (NSNumber*)[_contentData objectForKey:@"id_job"];
+           //if([id_job integerValue] != 1 ){
                 self.startBt = [UIButton buttonWithType:UIButtonTypeCustom];
                 [_startBt setBackgroundColor:[UIColor clearColor]];
                 [_startBt addTarget:self action:@selector(clicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -107,7 +107,7 @@
                 [_finishBt setBackgroundColor:[UIColor clearColor]];
                 [_finishBt addTarget:self action:@selector(clicked:) forControlEvents:UIControlEventTouchUpInside];
                 [self.contentView addSubview:_finishBt];
-            }
+           // }
         }
         self.separator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"separator_person.png"]];
         [self.contentView addSubview:_separator];
