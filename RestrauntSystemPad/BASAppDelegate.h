@@ -32,6 +32,7 @@
 @property (nonatomic, assign) BOOL isBackground;
 @property (nonatomic, assign) BOOL isShowMessage;
 @property (nonatomic, assign) BOOL isVirtual;
+@property (nonatomic, assign) BOOL isModify;
 @property (nonatomic, strong) NSDictionary* employeeInfo;
 @property (nonatomic, strong) NSArray* orders;
 @property (nonatomic, assign) NSUInteger curCoastOrder;

@@ -71,7 +71,8 @@ typedef enum {
     EMPLOYEER,
     WAREWHOUSE,
     HALLS,
-    SWIPE
+    SWIPE,
+    VIRTUALTABLE
 } TableType;
 
 typedef enum {
@@ -309,6 +310,7 @@ typedef enum {
         // Menu
     TextForApiFuncMenuItemFormat,
     TextForApiFuncMenuCats,
+    TextForApiFuncMenuForDishes,
     TextForApiFuncMenuDishesFormat,
     TextForApiFuncMenuDishesWithOrderFormat,
     TextForApiFuncGetDishFormat,
@@ -333,6 +335,8 @@ typedef enum {
     TextForAPIBaseURL,
     // Keys
     TextForApiKeyResult,
+    TextForApiKeyCountCategory,
+    TextForApiKeyCellColor,
     TextForApiKeyId,
     TextForApiKeyIdTable,
         // Halls
@@ -936,8 +940,8 @@ typedef NS_ENUM(NSUInteger, OrderItemState) {
     OrderItemStateReserved = 7,
 };
 
-+ (NSString *)menuCatTitleForId:(NSString*)catName;
-+ (UIImage *)menuCatImgForId:(NSString*)catId;
+
++ (UIImage *)menuCatImgForId:(NSInteger )catID;
 + (NSArray *)menuCategories;
 
 

@@ -40,6 +40,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.isShowMessage = NO;
+
     
     UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     
@@ -62,6 +63,9 @@
 
 }
 #pragma mark - Public methods
+
+
+
 - (NSArray*)sortContent:(NSArray*)source withType:(SwitchType)type{
     
     NSMutableArray* data = [NSMutableArray new];

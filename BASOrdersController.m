@@ -407,12 +407,15 @@
             for(NSDictionary* obj in content){
                 NSNumber* count_dish = (NSNumber*)[obj objectForKey:@"count_dish"];
                 for(int i = 0; i < [count_dish intValue]; i ++){
+                    NSDictionary* dish = (NSDictionary*) [ obj objectForKey:@"dish"];
                     dict = @{
-                             @"id_dish": (NSNumber*)[obj objectForKey:@"id_dish"],
+                             @"id_dish": (NSNumber*)[dish objectForKey:@"id_dish"],
                              @"id_table": (NSNumber*)[obj objectForKey:@"id_table"],
-                             @"name_dish": (NSNumber*)[obj objectForKey:@"name_dish"],
-                             @"price": (NSNumber*)[obj objectForKey:@"price"],
-                             @"weight": (NSNumber*)[obj objectForKey:@"weight"],
+                             @"name_dish": (NSNumber*)[dish objectForKey:@"name_dish"],
+                             @"price": (NSNumber*)[dish objectForKey:@"price"],
+                             @"unit_price": [dish objectForKey:@"unit_price"],
+                             @"weight": (NSNumber*)[dish objectForKey:@"weight"],
+                             @"unit_weight" : [dish objectForKey:@"unit_weight"],
                              @"id_order": (NSNumber*)[obj objectForKey:@"id_order"],
                              @"id_dish_order": (NSNumber*)[obj objectForKey:@"id_dish_order"],
                              };

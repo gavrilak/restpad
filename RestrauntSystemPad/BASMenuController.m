@@ -25,6 +25,7 @@
 @property(nonatomic, strong) UILabel* nameCategory;
 @property(nonatomic, strong) NSString* categoryName;
 @property(nonatomic, strong) UIPopoverController *popover;
+@property (nonatomic,strong) NSDictionary* rootMenuDict;
 
 @end
 
@@ -52,8 +53,12 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     TheApp;
+    if(app.isOrder)
+        [self setupBackBtn];
     [self.view addSubview:app.tabBar];
-    [self getData];
+  
+    [self getDataRootMenu];
+  
 }
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
@@ -63,7 +68,98 @@
 
 #pragma mark -
 #pragma mark Private methods
-- (void)prepareView{
+- (void)getDataSubMenu:(NSDictionary*) dict {
+    BASManager* manager = [BASManager sharedInstance];
+    NSDictionary* dictParam = @{@"id_category":[self.rootMenuDict objectForKey:[Settings text:TextForApiKeyId]]};
+    [manager getData:[manager formatRequest:[Settings text:TextForApiFuncMenuItemFormat] withParam:dictParam] success:^(id responseObject) {
+        
+        
+        if([responseObject isKindOfClass:[NSDictionary class]]){
+            
+            NSArray* param = (NSArray*)[responseObject objectForKey:@"param"];
+            NSLog(@"Response: %@",param);
+            if(param != nil){
+                
+                NSLog(@"%d",param.count);
+                NSMutableArray* data = [[NSMutableArray alloc]initWithCapacity:param.count];
+                
+                for (NSDictionary* obj in param) {
+                    
+                    NSString* catName = (NSString*)[obj objectForKey:@"name_category"];
+                    
+                    NSDictionary* dict = @{
+                                           [Settings text:TextForApiKeyCountCategory]:(NSNumber*) (NSNumber*)[obj objectForKey:@"category_count"],
+                                           [Settings text:TextForApiKeyId]: (NSNumber*)[obj objectForKey:@"id_category"],
+                                           [Settings text:TextForApiKeyTableState]: (NSNumber*)[obj objectForKey:@"load"],
+                                           [Settings text:TextForApiKeyCellColor]: (NSString*)[obj objectForKey:@"color"],
+                                           [Settings text:TextForApiKeyImage]: [self.rootMenuDict objectForKey:[Settings text:TextForApiKeyImage]],
+                                           [Settings text:TextForApiKeyTitle]: catName
+                                           };
+                    
+                    [data addObject:dict];
+                    
+                }
+                self.contentData = [NSArray arrayWithArray:data];
+                
+                [self prepareView:NO];
+            }
+            
+        }
+        
+        
+    } failure:^(NSString *error) {
+        [manager showAlertViewWithMess:ERROR_MESSAGE];
+    }];
+    
+    
+}
+
+- (void)getDataRootMenu{
+    
+    
+    BASManager* manager = [BASManager sharedInstance];
+    
+    [manager getData:[manager formatRequest:[Settings text:TextForApiFuncMenuItemFormat] withParam:nil] success:^(id responseObject) {
+        
+        if([responseObject isKindOfClass:[NSDictionary class]]){
+            
+            NSArray* param = (NSArray*)[responseObject objectForKey:@"param"];
+            NSLog(@"Response: %@",param);
+            if(param != nil){
+                
+                NSLog(@"%d",param.count);
+                NSMutableArray* data = [[NSMutableArray alloc]initWithCapacity:param.count];
+                
+                for (NSDictionary* obj in param) {
+                    
+                    NSString* catName = (NSString*)[obj objectForKey:@"name_category"];
+                    
+                    NSDictionary* dict = @{
+                                           [Settings text:TextForApiKeyCountCategory]:(NSNumber*) (NSNumber*)[obj objectForKey:@"category_count"],
+                                           [Settings text:TextForApiKeyId]: (NSNumber*)[obj objectForKey:@"id_category"],
+                                           [Settings text:TextForApiKeyTableState]: (NSNumber*)[obj objectForKey:@"load"],
+                                           [Settings text:TextForApiKeyCellColor]: (NSString*)[obj objectForKey:@"color"],
+                                           [Settings text:TextForApiKeyImage]: [Settings menuCatImgForId:[[obj objectForKey:@"id_category"] integerValue]],
+                                           [Settings text:TextForApiKeyTitle]: catName
+                                           };
+                    
+                    [data addObject:dict];
+                    
+                }
+                self.contentData = [NSArray arrayWithArray:data];
+                
+                [self prepareView:YES];
+            }
+            
+        }
+        
+        
+    } failure:^(NSString *error) {
+        [manager showAlertViewWithMess:ERROR_MESSAGE];
+    }];
+}
+
+- (void)prepareView: (BOOL) subMenu {
     
     CGRect frame = CGRectMake(0, 0, 320.f, self.view.frame.size.height - 56.f);
     
@@ -112,51 +208,7 @@
     
     
 }
-- (void)getData{
-    
- 
-    BASManager* manager = [BASManager sharedInstance];
 
-    [manager getData:[manager formatRequest:[Settings text:TextForApiFuncMenuItemFormat] withParam:nil] success:^(id responseObject) {
-  
-        if([responseObject isKindOfClass:[NSDictionary class]]){
-    
-            NSArray* param = (NSArray*)[responseObject objectForKey:@"param"];
-             NSLog(@"Response: %@",param);
-            if(param != nil && param.count > 0){
-                
-                
-                NSMutableArray* data = [[NSMutableArray alloc]initWithCapacity:param.count];
-                
-                for (NSDictionary* obj in param) {
-                 
-                    NSString* catName = (NSString*)[obj objectForKey:@"name_category"];
-   
-                    NSDictionary* dict = @{
-                                           [Settings text:TextForApiKeyId]: (NSNumber*)[obj objectForKey:@"id_category"],
-                                           [Settings text:TextForApiKeyTableState]: (NSNumber*)[obj objectForKey:@"load"],
-                                           [Settings text:TextForApiKeyImage]: [Settings menuCatImgForId:catName],
-                                           [Settings text:TextForApiKeyTitle]: [Settings menuCatTitleForId:catName],
-                                           @"modificators":(NSArray*)[obj objectForKey:@"modificators"],
-                                           };
-                    
-                    [data addObject:dict];
-                    
-                }
-                self.contentData = [NSArray arrayWithArray:data];
-                
-                NSDictionary* dict = (NSDictionary*)[_contentData objectAtIndex:curIndex];
-                self.categoryName = (NSString*)[dict objectForKey:@"title"];
-                [self getSubData:dict];
-            }
-  
-        }
-        
-        
-    } failure:^(NSString *error) {
-        [manager showAlertViewWithMess:ERROR_MESSAGE];
-    }];
-}
 - (void)getSubData:(NSDictionary*)content{
     
     
@@ -231,7 +283,7 @@
                 }
                 self.leftContentData = [NSArray arrayWithArray:left];
                 self.rightContentData = [NSArray arrayWithArray:right];
-                [self prepareView];
+            [self prepareView :YES];
            // }
         }
     } failure:^(NSString *error) {
@@ -255,7 +307,11 @@
         curIndex = [indexPath row];
         dict = (NSDictionary*)[_contentData objectAtIndex:curIndex];
         self.categoryName = (NSString*)[dict objectForKey:@"title"];
-        [self getSubData:dict];
+        if( [[dict objectForKey:[Settings text:TextForApiKeyCountCategory]] integerValue] > 1) {
+            [self getDataSubMenu:dict];
+        } else {
+            [self getSubData:dict];
+        }
     } else if(tableView == _tableLeftView){
         dict = (NSDictionary*)[_leftContentData objectAtIndex:[indexPath row]];
         BASDishViewController* controller = [BASDishViewController new];
@@ -280,6 +336,29 @@
         }
     }
 }
+/*TheApp;
+NSDictionary* dict = (NSDictionary*)[_contentData objectAtIndex:[indexPath row]];
+if( [[dict objectForKey:[Settings text:TextForApiKeyCountCategory]] integerValue] > 1) {
+    BASMenuController* controller = [[BASMenuController alloc]init];
+    controller.rootMenuDict = (NSDictionary*)[_contentData objectAtIndex:[indexPath row]];
+    app.isOrder = YES;
+    controller.isOrder = _isOrder;
+    [self.navigationController pushViewController:controller animated:YES];
+} else {
+    app.isOrder = NO;
+    NSArray* controllers = self.navigationController.viewControllers;
+    for(UIViewController* obj in controllers){
+        if([obj isKindOfClass:[BASTablesController class]]){
+            app.isOrder = YES;
+            break;
+        }
+    }
+    BASCategoryViewController* controller = [[BASCategoryViewController alloc]init];
+    controller.contentData = (NSDictionary*)[_contentData objectAtIndex:[indexPath row]];
+    controller.isOrder = _isOrder;
+    [self.navigationController pushViewController:controller animated:YES];
+}
+*/
 
 
 @end

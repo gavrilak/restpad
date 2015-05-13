@@ -263,6 +263,8 @@
 		A5C2247019B9CE3600FF2ACE /* cross_act@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5C2246E19B9CE3600FF2ACE /* cross_act@2x.png */; };
 		A5C2247119B9CE3600FF2ACE /* tick_act@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5C2246F19B9CE3600FF2ACE /* tick_act@2x.png */; };
 		BFD1EA301AC5AE3700215ADD /* btn_cancellation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFD1EA2F1AC5AE3700215ADD /* btn_cancellation@2x.png */; };
+		BFEF2E091B0362FB00D8225E /* cell_garniru@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFEF2E081B0362FB00D8225E /* cell_garniru@2x.png */; };
+		BFEF2E0B1B03630800D8225E /* cell_kids@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFEF2E0A1B03630800D8225E /* cell_kids@2x.png */; };
 		CB617EDE197B9D6D00E9C3CF /* BASMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB617EDD197B9D6D00E9C3CF /* BASMenuController.m */; };
 		CB617EE1197B9DD700E9C3CF /* BASCustomTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB617EE0197B9DD700E9C3CF /* BASCustomTableView.m */; };
 		CB617EE6197B9E4500E9C3CF /* BASCategoryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB617EE5197B9E4500E9C3CF /* BASCategoryTableViewCell.m */; };
@@ -625,6 +627,8 @@
 		A5C2246E19B9CE3600FF2ACE /* cross_act@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cross_act@2x.png"; sourceTree = "<group>"; };
 		A5C2246F19B9CE3600FF2ACE /* tick_act@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tick_act@2x.png"; sourceTree = "<group>"; };
 		BFD1EA2F1AC5AE3700215ADD /* btn_cancellation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_cancellation@2x.png"; sourceTree = "<group>"; };
+		BFEF2E081B0362FB00D8225E /* cell_garniru@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell_garniru@2x.png"; sourceTree = "<group>"; };
+		BFEF2E0A1B03630800D8225E /* cell_kids@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell_kids@2x.png"; sourceTree = "<group>"; };
 		CB617EDC197B9D6D00E9C3CF /* BASMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BASMenuController.h; path = RestrauntSystemPad/BASMenuController.h; sourceTree = "<group>"; };
 		CB617EDD197B9D6D00E9C3CF /* BASMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BASMenuController.m; path = RestrauntSystemPad/BASMenuController.m; sourceTree = "<group>"; };
 		CB617EDF197B9DD700E9C3CF /* BASCustomTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASCustomTableView.h; sourceTree = "<group>"; };
@@ -1031,6 +1035,8 @@
 		A59FBADA197A5656006F3764 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				BFEF2E0A1B03630800D8225E /* cell_kids@2x.png */,
+				BFEF2E081B0362FB00D8225E /* cell_garniru@2x.png */,
 				A59FBADB197A5656006F3764 /* cell_alco@2x.png */,
 				A59FBADC197A5657006F3764 /* cell_blyuda@2x.png */,
 				A59FBADD197A5657006F3764 /* cell_bread@2x.png */,
@@ -1650,6 +1656,7 @@
 				A5A22FDA198B7F1D0053FC16 /* search_s@2x.png in Resources */,
 				A59FBC24197A8649006F3764 /* tab_bar_ipad_gorizont@2x.png in Resources */,
 				A59FBB31197A5657006F3764 /* auth_tf_bg@2x~iphone.png in Resources */,
+				BFEF2E091B0362FB00D8225E /* cell_garniru@2x.png in Resources */,
 				A59FBB74197A5657006F3764 /* cell_order@2x.png in Resources */,
 				A574F3871A08DF2000D5EFB3 /* cell_num@2x.png in Resources */,
 				A59FBC22197A73D4006F3764 /* box@2x~ipad.png in Resources */,
@@ -1676,6 +1683,7 @@
 				32D221601A44414600D6E39F /* hd_movement_on_clients@2x.png in Resources */,
 				A5C2246D19B9A66200FF2ACE /* door_vert@2x.png in Resources */,
 				A59FBB70197A5657006F3764 /* button_video_m.png in Resources */,
+				BFEF2E0B1B03630800D8225E /* cell_kids@2x.png in Resources */,
 				A59FBB81197A5657006F3764 /* btn_tick_s@2x.png in Resources */,
 				A59B54FA197D1B7800A80E3F /* frame_virtual_table@2x.png in Resources */,
 				A59FBB67197A5657006F3764 /* not_fulfilled@2x.png in Resources */,

@@ -11,6 +11,7 @@
 
 @interface BASOrderViewController : BASBaseController
 
+@property(nonatomic,strong)NSArray* contentArray;
 @property(nonatomic,strong)NSDictionary* contentData;
 @property(nonatomic,strong)NSDictionary* titleInfo;
 @property(nonatomic,assign)BOOL isMove;

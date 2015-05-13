@@ -84,6 +84,8 @@
     }
     
     self.lblTitle.text = [NSString stringWithFormat:[Settings text:TextForDishCellTitleFormat], title];
+    self.lblTitle.numberOfLines = 0;
+    self.lblTitle.textAlignment = NSTextAlignmentCenter;
 }
 
 - (void)setWeight:(NSString*)weight
@@ -97,6 +99,7 @@
                                       andTextColor:[Settings color:ColorForDishCellWeight]];
     }
     self.lblWeight.text = _weight;
+    self.lblWeight.textAlignment = NSTextAlignmentLeft;
     //self.lblWeight.text = [NSString stringWithFormat:[Settings text:TextForDishCellWeightFormat], weight, [Settings text:TextForWeightUnit]];
 }
 

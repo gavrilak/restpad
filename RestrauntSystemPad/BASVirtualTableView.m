@@ -122,13 +122,11 @@
                 [self addSubview:_customBadge];
                 
         
-                dict = @{@"order_items":_contentData};
-                dict = @{@"order":dict};
                 TheApp;
                 app.isOrder = NO;
                 BASOrderViewController* controller = [BASOrderViewController new];
                 controller.isMove = YES;
-                controller.contentData = dict;
+                controller.contentArray = _contentData;
                 
                 if(!self.popover.popoverVisible){
                     self.popover = nil;

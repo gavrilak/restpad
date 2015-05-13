@@ -66,16 +66,18 @@
     _title = title;
     
     if (!self.lblTitle) {
-        CGRect rect = CGRectMake(60.f,
-                                 25.f,
-                                 200.f,
-                                 [Settings fontSize:FontForDishCellTitle] + [Settings correction:CorrectionForLblHeightFromFontSize]);
+        CGRect rect = CGRectMake(30.f,
+                                 10.f,
+                                 260.f,
+                                 [Settings fontSize:FontForDishCellTitle] * 2 + [Settings correction:CorrectionForLblHeightFromFontSize]* 2);
         self.lblTitle = [self setupLabelWithFrame:rect
                                           andFont:[Settings font:FontForDishCellTitle]
                                      andTextColor:[Settings color:ColorForDishCellTitle]];
     }
     
     self.lblTitle.text = [NSString stringWithFormat:[Settings text:TextForDishCellTitleFormat], title];
+     self.lblTitle.numberOfLines = 0;
+     self.lblTitle.textAlignment = NSTextAlignmentCenter;
 }
 
 - (void)setWeight:(NSString*)weight
@@ -85,12 +87,13 @@
     if (!self.lblWeight) {
         CGRect rect = CGRectMake(12.f,
                    75.5f,
-                   35.f,
+                   50.f,
                 [Settings fontSize:FontForDishCellWeight] + [Settings correction:CorrectionForLblHeightFromFontSize]);
         self.lblWeight = [self setupLabelWithFrame:rect
                                            andFont:[Settings font:FontForDishCellWeight]
                                       andTextColor:[Settings color:ColorForDishCellWeight]];
     }
+    self.lblWeight.textAlignment = NSTextAlignmentLeft;
     self.lblWeight.text = _weight;
     //self.lblWeight.text = [NSString stringWithFormat:[Settings text:TextForDishCellWeightFormat], weight, [Settings text:TextForWeightUnit]];
 }
@@ -100,8 +103,8 @@
     _cost = cost;
     
     if (!self.lblCost) {
-        CGRect rect = CGRectMake(70.f,
-                                 55.5f,
+        CGRect rect = CGRectMake(75.f,
+                                 60.f,
                                  190.f,
                                  [Settings fontSize:FontForDishCellCost] + [Settings correction:CorrectionForLblHeightFromFontSize]);
         self.lblCost = [self setupLabelWithFrame:rect

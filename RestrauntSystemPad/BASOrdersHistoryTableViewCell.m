@@ -7,7 +7,7 @@
 //
 
 #import "BASOrdersHistoryTableViewCell.h"
-static NSInteger persent = 2;
+
 
 
 @interface BASOrdersHistoryTableViewCell()
@@ -37,8 +37,6 @@ static NSInteger persent = 2;
             break;
     }
     [_imgView setImage:image];
-    NSInteger sum = [[_textView text]integerValue];
-    [_discountView setText:[NSString stringWithFormat:@"%.2f грн",(sum * persent) / 100.f]];
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier withContent:(NSDictionary*)contentData withType:(OrdersHistoryType)type
@@ -92,7 +90,6 @@ static NSInteger persent = 2;
             _priceView.font = [UIFont fontWithName:@"Helvetica-Light" size:12.f];
             _priceView.textColor = [UIColor blackColor];
             _priceView.textAlignment = NSTextAlignmentCenter;
-            [_priceView setText:[NSString stringWithFormat:@"%d%%",persent]];
             [self addSubview:_priceView];
             
             self.discountView =  [[UILabel alloc]init];

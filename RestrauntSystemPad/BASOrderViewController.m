@@ -53,7 +53,7 @@
 #pragma mark - Private methods
 - (void)prepareView{
 
-    if(self.contentData != nil){
+    if(self.contentData != nil || self.contentArray!=nil){
   
         [self.tableView removeFromSuperview];
         self.tableView = nil;
@@ -63,11 +63,19 @@
         self.dishesContent = nil;
         self.dishesContent = [NSArray arrayWithArray:(NSArray*)[order objectForKey:@"order_items"]];
 
+        if(self.contentArray !=nil) {
+            self.dishesContent = self.contentArray;
+        }
+        
         
         if(_isMove){
             TheApp;
             app.isVirtual = NO;
-            self.tableView = [[BASCustomTableView alloc]initWithFrame:self.view.frame style:UITableViewStyleGrouped withContent:_dishesContent withType:SWIPE withDelegate:self];
+            if (self.contentArray != nil) {
+                self.tableView = [[BASCustomTableView alloc]initWithFrame:self.view.frame style:UITableViewStyleGrouped withContent:_dishesContent withType:VIRTUALTABLE withDelegate:self];
+            } else {
+                self.tableView = [[BASCustomTableView alloc]initWithFrame:self.view.frame style:UITableViewStyleGrouped withContent:_dishesContent withType:SWIPE withDelegate:self];
+            }
         } else {
             self.tableView = [[BASCustomTableView alloc]initWithFrame:self.view.frame style:UITableViewStylePlain withContent:_dishesContent withType:SUBCATEGORYTABLE withDelegate:nil];
         }

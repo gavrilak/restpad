@@ -65,14 +65,14 @@
     return  20.0;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if(_typeTable == SWIPE){
+    if(_typeTable == SWIPE || _typeTable == VIRTUALTABLE){
         return _contentData.count;
     }
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if(_typeTable == SWIPE){
+    if(_typeTable == SWIPE || _typeTable == VIRTUALTABLE){
         return 1;
     }
     return [_contentData count];
@@ -83,7 +83,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
     NSDictionary* obj = (NSDictionary*)[_contentData objectAtIndex:[indexPath row]];
-    if(_typeTable == SWIPE){
+    if(_typeTable == SWIPE || _typeTable == VIRTUALTABLE){
          obj = (NSDictionary*)[_contentData objectAtIndex:[indexPath section]];
          return [self cellClass:obj withIndex:(NSInteger)[indexPath section]];
     }
@@ -123,6 +123,7 @@
         case HALLS:
             return 90.f;
             break;
+        case VIRTUALTABLE:
         case SWIPE:
             return 105.5f;
             break;
@@ -151,10 +152,11 @@
 
             BASSubCategoryTableViewCell* cell = [[BASSubCategoryTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier withContent:obj];
             cell.delegate = _delegateDish;
-            cell.title = (NSString*)[obj objectForKey:@"name_dish"];
+            NSDictionary* dish = [obj objectForKey:@"dish"];
+            cell.title = (NSString*)[dish objectForKey:@"name_dish"];
             NSLog(@"name_dish: %@", cell.title);
-            cell.weight = (NSString*)[obj objectForKey:@"weight"];
-            cell.cost = (NSString*)[obj objectForKey:@"price"];
+            cell.weight = [NSString stringWithFormat:@"%@ %@", [dish objectForKey:@"weight"], [dish objectForKey:@"unit_weight"]] ;
+            cell.cost = [NSString stringWithFormat:@"%@ %@",[dish objectForKey:@"price"], [dish objectForKey:@"unit_price"]] ;
             cell.dishIdx = index;
             NSNumber* count_dish = (NSNumber*)[obj objectForKey:@"count_dish"];
             cell.count = [count_dish integerValue];
@@ -194,7 +196,12 @@
             BASOrdersHistoryTableViewCell *cell = [[BASOrdersHistoryTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier withContent:obj withType:type];
   
                 
-            NSNumber* cost = (NSNumber*)[obj objectForKey:@"cost"];
+            NSNumber* cost ;
+            if(type != ALLTYPE ) {
+                cost = (NSNumber*)[obj objectForKey:@"cost"];
+            } else {
+                cost = (NSNumber*)[obj objectForKey:@"cost_discount"];
+            }
             [cell.textView setText:[NSString stringWithFormat:@"%d грн",[cost integerValue]]];
 
             NSNumber* number_table = (NSNumber*)[obj objectForKey:@"number_table"];
@@ -206,6 +213,8 @@
                 time = [NSString stringWithFormat:@"%@",[sort objectAtIndex:1]];
                 sort = [time componentsSeparatedByString:@":"];
                 cell.timeView.text = [NSString stringWithFormat:@"%@:%@",[sort objectAtIndex:0],[sort objectAtIndex:1]];
+                cell.priceView.text = [NSString stringWithFormat:@"%@%%",[[obj objectForKey:@"client"] objectForKey:@"discount"]];
+                cell.discountView.text = [NSString stringWithFormat:@"%.2f грн",[[obj objectForKey:@"discount"] floatValue]];
             }
             
             
@@ -246,6 +255,9 @@
             Cell = cell;
         }
             break;
+         
+        case VIRTUALTABLE:
+            obj = [obj objectForKey:@"dish"];
             
         case SWIPE:{
       
@@ -256,8 +268,8 @@
             cell.delegate = (id)_delegateDish;
             cell.title = (NSString*)[obj objectForKey:@"name_dish"];
             NSLog(@"name_dish: %@", cell.title);
-            cell.weight = (NSString*)[obj objectForKey:@"weight"];
-            cell.cost = (NSString*)[obj objectForKey:@"price"];
+            cell.weight = [NSString stringWithFormat:@"%@ %@", [obj objectForKey:@"weight"], [obj objectForKey:@"unit_weight"]] ;
+            cell.cost = [NSString stringWithFormat:@"%@ %@",[obj objectForKey:@"price"], [obj objectForKey:@"unit_price"]] ;
             cell.dishIdx = index;
             NSNumber* count_dish = (NSNumber*)[obj objectForKey:@"count_dish"];
             cell.count = [count_dish integerValue];
