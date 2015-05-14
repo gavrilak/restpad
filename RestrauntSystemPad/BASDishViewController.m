@@ -44,39 +44,13 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    [self getData];
+   [self prepareView:self.contentData];
     
     
 }
 
 #pragma mark - Private methods
-- (void)getData{
-   
-    BASManager* manager = [BASManager sharedInstance];
-    NSDictionary* dict = @{
-                           @"id_dish": (NSNumber*)[_contentData objectForKey:@"id_dish"],
-                           };
-    
-    
-    [manager getData:[manager formatRequest:[Settings text:TextForApiFuncMenuDishesFormat] withParam:dict] success:^(id responseObject) {
-        
 
-        if([responseObject isKindOfClass:[NSDictionary class]]){
-            
-            
-            NSArray* param = (NSArray*)[responseObject objectForKey:@"param"];
-            NSLog(@"Response: %@",param);
-            NSDictionary* dict = (NSDictionary*)[param objectAtIndex:0];
-           
-            if(dict != nil){
-                [self prepareView:dict];
-            }
-
-        }
-    } failure:^(NSString *error) {
-        [manager showAlertViewWithMess:ERROR_MESSAGE];
-    }];
-}
 
 - (void)prepareView:(NSDictionary*)obj{
     

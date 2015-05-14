@@ -22,9 +22,9 @@
 @property (nonatomic,strong) BASCustomTableView* tableLeftView;
 @property (nonatomic,strong) BASCustomTableView* tableRightView;
 @property (nonatomic,strong) UIImageView* separatorView;
-@property(nonatomic, strong) UILabel* nameCategory;
-@property(nonatomic, strong) NSString* categoryName;
-@property(nonatomic, strong) UIPopoverController *popover;
+@property (nonatomic,strong) UILabel* nameCategory;
+@property (nonatomic,strong) NSString* categoryName;
+@property (nonatomic,strong) UIPopoverController *popover;
 @property (nonatomic,strong) NSDictionary* rootMenuDict;
 
 @end
@@ -53,10 +53,11 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     TheApp;
-    if(app.isOrder)
-        [self setupBackBtn];
+    
     [self.view addSubview:app.tabBar];
-  
+    self.leftContentData = nil;
+    self.rightContentData = nil;
+    self.categoryName = nil;
     [self getDataRootMenu];
   
 }
@@ -68,9 +69,9 @@
 
 #pragma mark -
 #pragma mark Private methods
-- (void)getDataSubMenu:(NSDictionary*) dict {
+- (void)getDataSubMenu:(NSDictionary*) rootDict {
     BASManager* manager = [BASManager sharedInstance];
-    NSDictionary* dictParam = @{@"id_category":[self.rootMenuDict objectForKey:[Settings text:TextForApiKeyId]]};
+    NSDictionary* dictParam = @{@"id_category":[rootDict objectForKey:[Settings text:TextForApiKeyId]]};
     [manager getData:[manager formatRequest:[Settings text:TextForApiFuncMenuItemFormat] withParam:dictParam] success:^(id responseObject) {
         
         
@@ -92,16 +93,26 @@
                                            [Settings text:TextForApiKeyId]: (NSNumber*)[obj objectForKey:@"id_category"],
                                            [Settings text:TextForApiKeyTableState]: (NSNumber*)[obj objectForKey:@"load"],
                                            [Settings text:TextForApiKeyCellColor]: (NSString*)[obj objectForKey:@"color"],
-                                           [Settings text:TextForApiKeyImage]: [self.rootMenuDict objectForKey:[Settings text:TextForApiKeyImage]],
+                                           [Settings text:TextForApiKeyImage]: [rootDict objectForKey:[Settings text:TextForApiKeyImage]],
                                            [Settings text:TextForApiKeyTitle]: catName
                                            };
                     
                     [data addObject:dict];
                     
                 }
-                self.contentData = [NSArray arrayWithArray:data];
-                
-                [self prepareView:NO];
+                NSMutableArray* left = [NSMutableArray new];
+                NSMutableArray* right = [NSMutableArray new];
+                for(int i = 0; i < data.count; i++){
+                    if(i % 2 == 0){
+                        [left addObject:[data objectAtIndex:i]];
+                    } else {
+                        [right addObject:[data objectAtIndex:i]];
+                    }
+                }
+                self.leftContentData = [NSArray arrayWithArray:left];
+                self.rightContentData = [NSArray arrayWithArray:right];
+
+                [self prepareView:YES];
             }
             
         }
@@ -186,11 +197,15 @@
     [self.nameCategory setFrame:CGRectMake(_separatorView.frame.origin.x + _separatorView.frame.size.width, 15.f, self.view.frame.size.width - ( _separatorView.frame.origin.x + _separatorView.frame.size.width), 45.f)];
     [self.view addSubview:self.nameCategory];
   
+    TableType typeTable = SUBCATEGORYTABLE;
+    if (subMenu) {
+        typeTable = CATEGORYTABLE;
+    }
     
     frame = CGRectMake(_separatorView.frame.origin.x + _separatorView.frame.size.width + 25.f, 55.f, 320.f, self.view.frame.size.height - 56.f - 55.f);
     [_tableLeftView removeFromSuperview];
     _tableLeftView = nil;
-    self.tableLeftView = [[BASCustomTableView alloc]initWithFrame:frame style:UITableViewStylePlain withContent:_leftContentData withType:SUBCATEGORYTABLE withDelegate:nil];
+    self.tableLeftView = [[BASCustomTableView alloc]initWithFrame:frame style:UITableViewStylePlain withContent:_leftContentData withType:typeTable withDelegate:nil];
     _tableLeftView.delegate = (id)self;
     [_tableLeftView setBounces:NO];
     [_tableLeftView setBackgroundColor:[UIColor clearColor]];
@@ -199,7 +214,7 @@
     frame = CGRectMake(_tableLeftView.frame.origin.x + _tableLeftView.frame.size.width + 10.f, 55.f, 320.f, self.view.frame.size.height - 56.f - 55.f);
     [_tableRightView removeFromSuperview];
     _tableRightView = nil;
-    self.tableRightView = [[BASCustomTableView alloc]initWithFrame:frame style:UITableViewStylePlain withContent:_rightContentData withType:SUBCATEGORYTABLE withDelegate:nil];
+    self.tableRightView = [[BASCustomTableView alloc]initWithFrame:frame style:UITableViewStylePlain withContent:_rightContentData withType:typeTable withDelegate:nil];
     [_tableRightView setBounces:NO];
     _tableRightView.delegate = (id)self;
     [_tableRightView setBackgroundColor:[UIColor clearColor]];
@@ -209,7 +224,7 @@
     
 }
 
-- (void)getSubData:(NSDictionary*)content{
+- (void)getCategoryData:(NSDictionary*)content{
     
     
     TheApp;
@@ -221,7 +236,7 @@
                            };
     
     
-    [manager getData:[manager formatRequest:[Settings text:TextForApiFuncMenuCats] withParam:dict] success:^(id responseObject) {
+    [manager getData:[manager formatRequest:[Settings text:TextForApiFuncMenuForDishes] withParam:dict] success:^(id responseObject) {
         
         if([responseObject isKindOfClass:[NSDictionary class]]){
             
@@ -237,25 +252,41 @@
                     NSDictionary* dict = nil;
                     NSDictionary* obj = (NSDictionary*)[param objectAtIndex:i];
                     NSNumber* availability = (NSNumber*)[obj objectForKey:@"availability"];
-                    if([availability intValue] == 1){
+                    if([availability intValue] > 0){
                         NSNumber* max_dish = (NSNumber*)[obj objectForKey:@"max_dish"];
                         if(max_dish != nil){
                             dict = @{
                                      @"id_dish": (NSNumber*)[obj objectForKey:@"id_dish"],
                                      @"name_dish": (NSNumber*)[obj objectForKey:@"name_dish"],
                                      @"price": (NSNumber*)[obj objectForKey:@"price"],
+                                     @"unit_price":(NSString*) [obj objectForKey:@"unit_price"],
                                      @"weight": (NSNumber*)[obj objectForKey:@"weight"],
+                                     @"unit_weight":(NSString*) [obj objectForKey:@"unit_weight"],
+                                     @"description": (NSString*) [obj objectForKey:@"description"],
+                                     @"descr_link": (NSString*) [obj objectForKey:@"descr_link"],
+                                     @"time_prepare":  (NSString*) [obj objectForKey:@"time_prepare"],
+                                     @"unit_time": (NSString*) [obj objectForKey:@"unit_time"],
                                      @"availability": (NSNumber*)[obj objectForKey:@"availability"],
                                      @"max_dish": (NSNumber*)[obj objectForKey:@"max_dish"],
+                                     @"global_mod": (NSArray*)[obj objectForKey:@"global_modificators"],
+                                     @"local_mod": (NSArray*)[obj objectForKey:@"local_modificators"],
                                      };
                         } else {
                             dict = @{
                                      @"id_dish": (NSNumber*)[obj objectForKey:@"id_dish"],
                                      @"name_dish": (NSNumber*)[obj objectForKey:@"name_dish"],
                                      @"price": (NSNumber*)[obj objectForKey:@"price"],
+                                     @"unit_price":(NSString*) [obj objectForKey:@"unit_price"],
                                      @"weight": (NSNumber*)[obj objectForKey:@"weight"],
+                                     @"unit_weight":(NSString*) [obj objectForKey:@"unit_weight"],
+                                     @"description": (NSString*) [obj objectForKey:@"description"],
+                                     @"descr_link": (NSString*) [obj objectForKey:@"descr_link"],
+                                     @"time_prepare":  (NSString*) [obj objectForKey:@"time_prepare"],
+                                     @"unit_time": (NSString*) [obj objectForKey:@"unit_time"],
                                      @"availability": (NSNumber*)[obj objectForKey:@"availability"],
                                      @"count_dish": (NSNumber*)[obj objectForKey:@"count_dish"],
+                                     @"global_mod": (NSArray*)[obj objectForKey:@"global_modificators"],
+                                     @"local_mod": (NSArray*)[obj objectForKey:@"local_modificators"],
                                      };
                         }
                         
@@ -283,7 +314,7 @@
                 }
                 self.leftContentData = [NSArray arrayWithArray:left];
                 self.rightContentData = [NSArray arrayWithArray:right];
-            [self prepareView :YES];
+            [self prepareView :NO];
            // }
         }
     } failure:^(NSString *error) {
@@ -310,32 +341,46 @@
         if( [[dict objectForKey:[Settings text:TextForApiKeyCountCategory]] integerValue] > 1) {
             [self getDataSubMenu:dict];
         } else {
-            [self getSubData:dict];
+            [self getCategoryData:dict];
         }
     } else if(tableView == _tableLeftView){
         dict = (NSDictionary*)[_leftContentData objectAtIndex:[indexPath row]];
-        BASDishViewController* controller = [BASDishViewController new];
-        controller.contentData = dict;
-        BASSubCategoryTableViewCell* cell = (BASSubCategoryTableViewCell*)[_tableLeftView cellForRowAtIndexPath:indexPath];
-        if(!self.popover.popoverVisible){
-            self.popover = nil;
-            self.popover  = [[UIPopoverController alloc] initWithContentViewController:controller];
-            [_popover setPopoverContentSize:CGSizeMake(320, 568)];
-            [_popover presentPopoverFromRect:cell.bounds inView:cell permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        if ([[dict objectForKey:[Settings text:TextForApiKeyCountCategory]] integerValue] > 1) {
+            [self getDataSubMenu:dict];
+        } else if ([[dict objectForKey:[Settings text:TextForApiKeyCountCategory]] integerValue] == 1) {
+             [self getCategoryData:dict];
+        } else {
+            BASDishViewController* controller = [BASDishViewController new];
+            controller.contentData = dict;
+            BASSubCategoryTableViewCell* cell = (BASSubCategoryTableViewCell*)[_tableLeftView cellForRowAtIndexPath:indexPath];
+            if(!self.popover.popoverVisible){
+                self.popover = nil;
+                self.popover  = [[UIPopoverController alloc] initWithContentViewController:controller];
+                [_popover setPopoverContentSize:CGSizeMake(320, 568)];
+                [_popover presentPopoverFromRect:cell.bounds inView:cell permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            }
         }
     }else if(tableView == _tableRightView){
         dict = (NSDictionary*)[_rightContentData objectAtIndex:[indexPath row]];
-        BASDishViewController* controller = [BASDishViewController new];
-        controller.contentData = dict;
-        BASSubCategoryTableViewCell* cell = (BASSubCategoryTableViewCell*)[_tableRightView cellForRowAtIndexPath:indexPath];
-        if(!self.popover.popoverVisible){
-            self.popover = nil;
-            self.popover  = [[UIPopoverController alloc] initWithContentViewController:controller];
-            [_popover setPopoverContentSize:CGSizeMake(320, 568)];
-            [_popover presentPopoverFromRect:cell.bounds inView:cell permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        if ([[dict objectForKey:[Settings text:TextForApiKeyCountCategory]] integerValue] > 1) {
+            [self getDataSubMenu:dict];
+        } else if ([[dict objectForKey:[Settings text:TextForApiKeyCountCategory]] integerValue] == 1) {
+            [self getCategoryData:dict];
+        } else {
+            BASDishViewController* controller = [BASDishViewController new];
+            controller.contentData = dict;
+            BASSubCategoryTableViewCell* cell = (BASSubCategoryTableViewCell*)[_tableRightView cellForRowAtIndexPath:indexPath];
+            if(!self.popover.popoverVisible){
+                self.popover = nil;
+                self.popover  = [[UIPopoverController alloc] initWithContentViewController:controller];
+                [_popover setPopoverContentSize:CGSizeMake(320, 568)];
+                [_popover presentPopoverFromRect:cell.bounds inView:cell permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            }
         }
     }
 }
+
+
 /*TheApp;
 NSDictionary* dict = (NSDictionary*)[_contentData objectAtIndex:[indexPath row]];
 if( [[dict objectForKey:[Settings text:TextForApiKeyCountCategory]] integerValue] > 1) {

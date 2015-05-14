@@ -153,6 +153,9 @@
             BASSubCategoryTableViewCell* cell = [[BASSubCategoryTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier withContent:obj];
             cell.delegate = _delegateDish;
             NSDictionary* dish = [obj objectForKey:@"dish"];
+            if (dish == nil) {
+                dish = obj;
+            }
             cell.title = (NSString*)[dish objectForKey:@"name_dish"];
             NSLog(@"name_dish: %@", cell.title);
             cell.weight = [NSString stringWithFormat:@"%@ %@", [dish objectForKey:@"weight"], [dish objectForKey:@"unit_weight"]] ;

@@ -61,7 +61,7 @@
         _wieghtView.shadowOffset = [Settings offset:OffsetForNavBarTitleShadow];
         _wieghtView.textAlignment = NSTextAlignmentLeft;
         _wieghtView.textColor = [Settings color:ColorForNavBarTitle];
-        _wieghtView.text = [NSString stringWithFormat:@"Вес: %@",(NSString*)[contentData objectForKey:@"weight"]];
+        _wieghtView.text = [NSString stringWithFormat:@"Вес: %@ %@",(NSString*)[contentData objectForKey:@"weight"] ,(NSString*)[contentData objectForKey:@"unit_weight"]];
         [_scrollView addSubview:_wieghtView];
         
         self.timeView = [[UILabel alloc] initWithFrame:CGRectMake(bgImg.frame.origin.x, bgImg.frame.origin.y + bgImg.frame.size.height + 50.f, frame.size.width - 2 * bgImg.frame.origin.x, 20.f)];
@@ -71,7 +71,7 @@
         _timeView.shadowOffset = [Settings offset:OffsetForNavBarTitleShadow];
         _timeView.textAlignment = NSTextAlignmentLeft;
         _timeView.textColor = [Settings color:ColorForNavBarTitle];
-        _timeView.text = [NSString stringWithFormat:@"Время приготовления: %@",(NSString*)[contentData objectForKey:@"time_prepare"]];
+        _timeView.text = [NSString stringWithFormat:@"Время приготовления: %@ %@",(NSString*)[contentData objectForKey:@"time_prepare"], (NSString*)[contentData objectForKey:@"unit_time"]];
         [_scrollView addSubview:_timeView];
         
         UILabel* about = [[UILabel alloc] initWithFrame:CGRectMake(bgImg.frame.origin.x, bgImg.frame.origin.y + bgImg.frame.size.height + 80.f, frame.size.width - 2 * bgImg.frame.origin.x, 20.f)];
