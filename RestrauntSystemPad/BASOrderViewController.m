@@ -7,16 +7,21 @@
 //
 
 #import "BASOrderViewController.h"
-#import "BASCustomTableView.h"
+
 #import "UMTableViewCell.h"
+#import "BASPickerView.h"
 
 @interface BASOrderViewController ()
 
-@property (nonatomic,strong) BASCustomTableView* tableView;
+
 @property (nonatomic,strong) NSArray* dishesContent;
 @property (nonatomic,strong) UIButton* btAdd;
 @property (nonatomic,strong) UIButton* btOrder;
 @property (nonatomic,strong) UIButton* btCalc;
+@property (nonatomic,strong) BASPickerView* pickerView;
+@property (nonatomic,strong) NSArray *emptyList;
+@property (nonatomic,strong) NSArray *orderList;
+@property (nonatomic,strong) NSArray *waiterList;
 
 @end
 
@@ -53,7 +58,7 @@
 #pragma mark - Private methods
 - (void)prepareView{
 
-    if(self.contentData != nil || self.contentArray!=nil){
+    if(self.contentData != nil ){
   
         [self.tableView removeFromSuperview];
         self.tableView = nil;
@@ -63,19 +68,14 @@
         self.dishesContent = nil;
         self.dishesContent = [NSArray arrayWithArray:(NSArray*)[order objectForKey:@"order_items"]];
 
-        if(self.contentArray !=nil) {
-            self.dishesContent = self.contentArray;
-        }
-        
+       
         
         if(_isMove){
             TheApp;
-            app.isVirtual = NO;
-            if (self.contentArray != nil) {
-                self.tableView = [[BASCustomTableView alloc]initWithFrame:self.view.frame style:UITableViewStyleGrouped withContent:_dishesContent withType:VIRTUALTABLE withDelegate:self];
-            } else {
-                self.tableView = [[BASCustomTableView alloc]initWithFrame:self.view.frame style:UITableViewStyleGrouped withContent:_dishesContent withType:SWIPE withDelegate:self];
-            }
+         
+            app.isVirtual = YES;
+            self.tableView = [[BASCustomTableView alloc]initWithFrame:self.view.frame style:UITableViewStyleGrouped withContent:_dishesContent withType:SWIPE withDelegate:self];
+            
         } else {
             self.tableView = [[BASCustomTableView alloc]initWithFrame:self.view.frame style:UITableViewStylePlain withContent:_dishesContent withType:SUBCATEGORYTABLE withDelegate:nil];
         }
@@ -104,33 +104,160 @@
     
     NSDictionary* dict = [[NSDictionary alloc] init];
     NSDictionary* data = ((UMTableViewCell*)cell).contentData;
+   
+    switch (_index)  {
+        case 0:{
+         //   UIAlertView *choiceAlertView = [[UIAlertView alloc]initWithTitle:@"" message:@"Переместить блюдо на стол:" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Новый",@"Виртуальный",@"Текущий",@"Отмена", nil];
+          //  [choiceAlertView show];
+            dict = @{
+                      @"id_dish_virtual": (NSNumber*)[data objectForKey:@"id_dish_virtual"],
+                      @"id_employee": (NSNumber*)[[[data objectForKey:@"order"] objectForKey:@"employee"] objectForKey:@"id_employee"],
+                      @"id_table": (NSNumber*)[[data objectForKey:@"order"] objectForKey:@"id_table"],
+                     };
+            [manager getData:[manager formatRequest:@"MOVETOTABLE" withParam:dict] success:^(id responseObject) {
+                
+                NSLog(@"Response: %@",responseObject);
+                NSArray* param = (NSArray*)[responseObject objectForKey:@"param"];
+                
+                if(param != nil && param.count > 0){
+                    NSDictionary* dict = [param objectAtIndex:0];
+                    NSDictionary* orderItems = [NSDictionary dictionaryWithObjectsAndKeys:[dict objectForKey:@"virtualTableElements"],@"order_items",nil];
+                    NSDictionary* order = [NSDictionary dictionaryWithObjectsAndKeys:orderItems,@"order",nil];
+                    self.contentData = order;
 
-    dict = @{
-             @"id_dish_virtual": (NSNumber*)[data objectForKey:@"id_dish_virtual"],
-             };
-    [manager getData:[manager formatRequest:@"REMOVEFROMVIRTUALTABLE" withParam:dict] success:^(id responseObject) {
-        
-        NSLog(@"Response: %@",responseObject);
-        NSArray* param = (NSArray*)[responseObject objectForKey:@"param"];
-        
-        if(param != nil && param.count > 0){
-            NSMutableArray * temp = [[NSMutableArray alloc]initWithCapacity:_dishesContent.count];
-            [temp addObjectsFromArray:_dishesContent];
-            [temp removeObjectAtIndex:_index];
-            self.dishesContent = [NSArray arrayWithArray:temp];
-            [self performSelector:@selector(updateData) withObject:nil afterDelay:1.0];
+                    [self performSelector:@selector(updateData) withObject:nil afterDelay:1.0];
+                }
+                
+                
+            } failure:^(NSString *error) {
+                [manager showAlertViewWithMess:ERROR_MESSAGE];
+            }];
+
+            
+            break;
         }
-        
-        
-    } failure:^(NSString *error) {
-        [manager showAlertViewWithMess:ERROR_MESSAGE];
-    }];
+        case 1:{
+            dict = @{
+                     @"id_dish_virtual": (NSNumber*)[data objectForKey:@"id_dish_virtual"],
+                     };
+            [manager getData:[manager formatRequest:@"REMOVEFROMVIRTUALTABLE" withParam:dict] success:^(id responseObject) {
+                
+                NSLog(@"Response: %@",responseObject);
+                NSArray* param = (NSArray*)[responseObject objectForKey:@"param"];
+                
+                if(param != nil && param.count > 0){
+                    NSDictionary* dict = [param objectAtIndex:0];
+                    NSDictionary* orderItems = [NSDictionary dictionaryWithObjectsAndKeys:[dict objectForKey:@"virtualTableElements"],@"order_items",nil];
+                    NSDictionary* order = [NSDictionary dictionaryWithObjectsAndKeys:orderItems,@"order",nil];
+                    self.contentData = order;
+                    self.dishesContent = [dict objectForKey:@"virtualTableElements"];
+                    [self performSelector:@selector(updateData) withObject:nil afterDelay:1.0];
+                }
+                
+                
+            } failure:^(NSString *error) {
+                [manager showAlertViewWithMess:ERROR_MESSAGE];
+            }];
+
+            break;
+        }
+    }
+    
 }
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    TheApp;
+    CGRect frame;
+    NSMutableArray* result = [NSMutableArray new];
+    NSMutableArray* tablesList = [NSMutableArray new];
+    NSMutableArray* tablesNameList = [NSMutableArray new];
+    NSMutableArray* waitersList = [NSMutableArray new];
+    NSMutableArray* waitersNameList = [NSMutableArray new];
+    NSNumber* cutTable = nil;
+    BASManager* manager = [BASManager sharedInstance];
+    [_pickerView removeFromSuperview];
+    self.pickerView = nil;
+    if(alertView.cancelButtonIndex != buttonIndex){
+        switch (buttonIndex) {
+            case 0:
+                frame = CGRectMake(1024.f / 2 - 190.f, 768.f / 2 - 200.f, 470.f, 280.f);
+                for(NSDictionary* obj in _emptyList){
+                    NSArray* tables = (NSArray*)[obj objectForKey:@"tables"];
+                    for(NSDictionary* tbl in tables){
+                        NSDictionary* dict = @{@"id_table": (NSNumber*)[tbl objectForKey:@"id_table"],
+                                               @"name_room": (NSString*)[obj objectForKey:@"name_room"]
+                                               };
+                        [tablesList addObject:dict];
+                        NSNumber* number_table = (NSNumber*)[tbl objectForKey:@"number_table"];
+                        [tablesNameList addObject:[NSString stringWithFormat:@"%d (%@)",[number_table intValue],(NSString*)[obj objectForKey:@"name_room"]]];
+                    }
+                    
+                }
+                self.emptyTemplate = [NSArray arrayWithArray:tablesList];
+                [result addObject:tablesNameList];
+                
+                for(NSDictionary* obj in _waiterList){
+                    NSDictionary* dict = @{@"id_employee": (NSNumber*)[obj objectForKey:@"id_employee"],
+                                           @"first_name": (NSString*)[obj objectForKey:@"first_name"],
+                                           @"surname": (NSString*)[obj objectForKey:@"surname"]
+                                           };
+                    [waitersList addObject:dict];
+                    [waitersNameList addObject:[NSString stringWithFormat:@"%@",[dict objectForKey:@"surname"]]];
+                    
+                    
+                }
+                self.waiterTemplate = [NSArray arrayWithArray:waitersList];
+                [result addObject:waitersNameList];
+                self.pickerView = [[BASPickerView alloc]initWithFrame:frame withContent:[NSArray arrayWithArray:result] withDoneButton:YES withCancelButton:YES];
+                self.pickerView.delegate = (id)self;
+                [self.view addSubview:_pickerView];
+                [self.view bringSubviewToFront:_pickerView];
+                [_pickerView selectRow:0 inComponent:0];
+                [_pickerView selectRow:0 inComponent:1];
+                app.isBusy = YES;
+                break;
+            case 1:
+                moveDict = @{
+                             @"id_order": (NSNumber*)[moveDict objectForKey:@"id_order"],
+                             @"id_dish_order": (NSNumber*)[moveDict objectForKey:@"id_dish_order"],
+                             @"id_table": [NSNumber numberWithInt:-1],
+                             @"id_employee": [NSNumber numberWithInt:-1],
+                             };
+                [self performSelector:@selector(showalertMessage) withObject:nil afterDelay:0.5];
+                return;
+                break;
+            case 2:{
+                if(tablesCount > 1){
+                    frame = CGRectMake(1024.f / 2 - 125.f, 768.f / 2 - 200.f, 250.f, 260.f);
+                    NSNumber* id_table = (NSNumber*)[moveDict objectForKey:@"id_table"];
+                    for(NSDictionary* obj in _orderList){
+                        NSNumber* cur_table = (NSNumber*)[obj objectForKey:@"id_table"];
+                        if([id_table integerValue] != [cur_table integerValue]){
+                            [tablesList addObject:obj];
+                            NSNumber* number_table = (NSNumber*)[obj objectForKey:@"number_table"];
+                            [tablesNameList addObject:[NSString stringWithFormat:@"%d (%@)",[number_table intValue],(NSString*)[obj objectForKey:@"name_room"]]];
+                        }
+                        
+                    }
+                    self.orderTemplate = [NSArray arrayWithArray:tablesList];
+                    [result addObject:tablesNameList];
+                    self.pickeView = [[BASPickerView alloc]initWithFrame:frame withContent:[NSArray arrayWithArray:result] withDoneButton:YES withCancelButton:NO];
+                    self.pickeView.delegate = (id)self;
+                    [self.view addSubview:_pickeView];
+                    [self.view bringSubviewToFront:_pickeView];
+                    [_pickeView selectRow:0 inComponent:0];
+                } else
+                    return;
+            }
+
+    
+}
+        
 - (void)updateData{
     [self.tableView removeFromSuperview];
     self.tableView = nil;
     TheApp;
-    app.isVirtual = NO;
+     app.isVirtual = YES;
     self.tableView = [[BASCustomTableView alloc]initWithFrame:self.view.frame style:UITableViewStyleGrouped withContent:_dishesContent withType:SWIPE withDelegate:self];
     _tableView.delegate = (id)self;
     [self.view addSubview:_tableView];

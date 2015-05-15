@@ -53,6 +53,7 @@
     }
     return self;
 }
+
 - (void)getData{
     BASManager* manager = [BASManager sharedInstance];
     
@@ -61,7 +62,7 @@
         
         NSLog(@"Response: %@",responseObject);
         NSArray* param = (NSArray*)[responseObject objectForKey:@"param"];
-        
+        [_customBadge removeFromSuperview];
         if(param != nil && param.count > 0){
   
             NSDictionary* dict = (NSDictionary*)[param objectAtIndex:0];
@@ -78,8 +79,18 @@
    
                 [_customBadge setFrame:CGRectMake(_button.frame.origin.x + _button.frame.size.width - 15.f, _button.frame.origin.y + 6.f, _customBadge.frame.size.width, _customBadge.frame.size.height)];
                 [self addSubview:_customBadge];
+                
+          
+                if(self.popover.popoverVisible){
+
+                
+                    BASOrderViewController* controller =(BASOrderViewController*) self.popover.contentViewController;
+                    [ controller.tableView reloadData];
+                }
+                
+
             } else {
-                [_customBadge removeFromSuperview];
+               
                 if(self.popover.popoverVisible){
                     [self.popover dismissPopoverAnimated:YES];
                     self.popover = nil;
@@ -108,6 +119,10 @@
             NSNumber* count = (NSNumber*)[dict objectForKey:@"count"];
             if([count integerValue] > 0){
                 self.contentData = (NSArray*)[dict objectForKey:@"virtualTableElements"];
+                NSDictionary* orderItems = [NSDictionary dictionaryWithObjectsAndKeys:[dict objectForKey:@"virtualTableElements"],@"order_items",nil];
+                NSDictionary* order = [NSDictionary dictionaryWithObjectsAndKeys:orderItems,@"order",nil];
+               
+
                 [_customBadge removeFromSuperview];
                 self.customBadge = nil;
                 self.customBadge = [CustomBadge customBadgeWithString:[NSString stringWithFormat:@"%d",_contentData.count]
@@ -126,7 +141,7 @@
                 app.isOrder = NO;
                 BASOrderViewController* controller = [BASOrderViewController new];
                 controller.isMove = YES;
-                controller.contentArray = _contentData;
+                controller.contentData = order;
                 
                 if(!self.popover.popoverVisible){
                     self.popover = nil;

@@ -65,14 +65,14 @@
     return  20.0;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if(_typeTable == SWIPE || _typeTable == VIRTUALTABLE){
+    if(_typeTable == SWIPE ){
         return _contentData.count;
     }
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if(_typeTable == SWIPE || _typeTable == VIRTUALTABLE){
+    if(_typeTable == SWIPE ){
         return 1;
     }
     return [_contentData count];
@@ -83,7 +83,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
     NSDictionary* obj = (NSDictionary*)[_contentData objectAtIndex:[indexPath row]];
-    if(_typeTable == SWIPE || _typeTable == VIRTUALTABLE){
+    if(_typeTable == SWIPE ){
          obj = (NSDictionary*)[_contentData objectAtIndex:[indexPath section]];
          return [self cellClass:obj withIndex:(NSInteger)[indexPath section]];
     }
@@ -123,7 +123,6 @@
         case HALLS:
             return 90.f;
             break;
-        case VIRTUALTABLE:
         case SWIPE:
             return 105.5f;
             break;
@@ -259,13 +258,16 @@
         }
             break;
          
-        case VIRTUALTABLE:
-            obj = [obj objectForKey:@"dish"];
+      
             
         case SWIPE:{
       
             UMTableViewCell* cell = [[UMTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier withContent:obj];
             cell.rightUtilityButtons = [self rightButtons];
+            NSDictionary* dish = [obj objectForKey:@"dish"];
+            if ( dish != nil) {
+                obj = dish;
+            }
             //[cell setRightUtilityButtons:[self rightButtons] WithButtonWidth:58.0f];
             
             cell.delegate = (id)_delegateDish;

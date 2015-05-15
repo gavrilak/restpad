@@ -71,8 +71,7 @@ typedef enum {
     EMPLOYEER,
     WAREWHOUSE,
     HALLS,
-    SWIPE,
-    VIRTUALTABLE
+    SWIPE
 } TableType;
 
 typedef enum {

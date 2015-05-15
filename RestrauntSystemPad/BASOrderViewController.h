@@ -7,13 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "BASCustomTableView.h"
 
 @interface BASOrderViewController : BASBaseController
 
-@property(nonatomic,strong)NSArray* contentArray;
 @property(nonatomic,strong)NSDictionary* contentData;
 @property(nonatomic,strong)NSDictionary* titleInfo;
+@property (nonatomic,strong) BASCustomTableView* tableView;
 @property(nonatomic,assign)BOOL isMove;
 
 @end

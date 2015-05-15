@@ -308,7 +308,7 @@
                 
                 posX += rect.size.width + 30.f;
                 [tbls addObject:contentView];
-                
+                [tblsRect addObject:[NSValue valueWithCGRect:CGRectMake(posX, posY, rect.size.width, rect.size.height)]];
             }
             
             UIImage* img = [Settings image:ImageForHallsDoor];
