@@ -10,8 +10,9 @@
 
 #import "UMTableViewCell.h"
 #import "BASPickerView.h"
+#import "CustomIOSAlertView.h"
 
-@interface BASOrderViewController ()
+@interface BASOrderViewController () <UIAlertViewDelegate >
 
 
 @property (nonatomic,strong) NSArray* dishesContent;
@@ -22,6 +23,12 @@
 @property (nonatomic,strong) NSArray *emptyList;
 @property (nonatomic,strong) NSArray *orderList;
 @property (nonatomic,strong) NSArray *waiterList;
+@property (nonatomic,strong) NSArray *emptyTemplate;
+@property (nonatomic,strong) NSArray *orderTemplate;
+@property (nonatomic,strong) NSArray *waiterTemplate;
+@property (nonatomic,strong) NSDictionary *moveDict;
+@property (nonatomic,assign) NSInteger choiceIndex;
+@property (nonatomic,strong) CustomIOSAlertView* customAlert;
 
 @end
 
@@ -104,36 +111,12 @@
     
     NSDictionary* dict = [[NSDictionary alloc] init];
     NSDictionary* data = ((UMTableViewCell*)cell).contentData;
-   
+    self.moveDict = data;
     switch (_index)  {
         case 0:{
-         //   UIAlertView *choiceAlertView = [[UIAlertView alloc]initWithTitle:@"" message:@"Переместить блюдо на стол:" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Новый",@"Виртуальный",@"Текущий",@"Отмена", nil];
-          //  [choiceAlertView show];
-            dict = @{
-                      @"id_dish_virtual": (NSNumber*)[data objectForKey:@"id_dish_virtual"],
-                      @"id_employee": (NSNumber*)[[[data objectForKey:@"order"] objectForKey:@"employee"] objectForKey:@"id_employee"],
-                      @"id_table": (NSNumber*)[[data objectForKey:@"order"] objectForKey:@"id_table"],
-                     };
-            [manager getData:[manager formatRequest:@"MOVETOTABLE" withParam:dict] success:^(id responseObject) {
-                
-                NSLog(@"Response: %@",responseObject);
-                NSArray* param = (NSArray*)[responseObject objectForKey:@"param"];
-                
-                if(param != nil && param.count > 0){
-                    NSDictionary* dict = [param objectAtIndex:0];
-                    NSDictionary* orderItems = [NSDictionary dictionaryWithObjectsAndKeys:[dict objectForKey:@"virtualTableElements"],@"order_items",nil];
-                    NSDictionary* order = [NSDictionary dictionaryWithObjectsAndKeys:orderItems,@"order",nil];
-                    self.contentData = order;
-
-                    [self performSelector:@selector(updateData) withObject:nil afterDelay:1.0];
-                }
-                
-                
-            } failure:^(NSString *error) {
-                [manager showAlertViewWithMess:ERROR_MESSAGE];
-            }];
-
-            
+            [self getPikerList];
+            UIAlertView *choiceAlertView = [[UIAlertView alloc]initWithTitle:@"" message:@"Переместить блюдо на стол:" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Новый",@"Текущий",@"Отмена", nil];
+            [choiceAlertView show];
             break;
         }
         case 1:{
@@ -165,6 +148,39 @@
     
 }
 
+- (void)updateData{
+    TheApp;
+    [self.tableView removeFromSuperview];
+    self.tableView = nil;
+    app.isVirtual = YES;
+    self.tableView = [[BASCustomTableView alloc]initWithFrame:self.view.frame style:UITableViewStyleGrouped withContent:_dishesContent withType:SWIPE withDelegate:self];
+    _tableView.delegate = (id)self;
+    [self.view addSubview:_tableView];
+    [app.virtualView UpdateBadge];
+}
+- (void)getPikerList{
+    
+    BASManager* manager = [BASManager sharedInstance];
+    
+    
+    [manager getData:[manager formatRequest:@"GETTABLELIST" withParam:nil] success:^(id responseObject) {
+        
+        NSLog(@"Response: %@",responseObject);
+        NSArray* param = (NSArray*)[responseObject objectForKey:@"param"];
+        NSDictionary* dict = (NSDictionary*)[param objectAtIndex:0];
+        if(dict != nil){
+            self.emptyList = [NSArray arrayWithArray:(NSArray*)[dict objectForKey:@"empty"]];
+            self.orderList = [NSArray arrayWithArray:(NSArray*)[dict objectForKey:@"orders"]];
+            self.waiterList = [NSArray arrayWithArray:(NSArray*)[dict objectForKey:@"waiters"]];
+            
+        }
+    } failure:^(NSString *error) {
+        [manager showAlertViewWithMess:ERROR_MESSAGE];
+    }];
+}
+
+#pragma mark - UIAlertViewDelegate
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     TheApp;
     CGRect frame;
@@ -173,14 +189,13 @@
     NSMutableArray* tablesNameList = [NSMutableArray new];
     NSMutableArray* waitersList = [NSMutableArray new];
     NSMutableArray* waitersNameList = [NSMutableArray new];
-    NSNumber* cutTable = nil;
-    BASManager* manager = [BASManager sharedInstance];
     [_pickerView removeFromSuperview];
     self.pickerView = nil;
+    self.choiceIndex = buttonIndex;
     if(alertView.cancelButtonIndex != buttonIndex){
         switch (buttonIndex) {
-            case 0:
-                frame = CGRectMake(1024.f / 2 - 190.f, 768.f / 2 - 200.f, 470.f, 280.f);
+            case 0:{
+                frame = CGRectMake(0,0,470,280);
                 for(NSDictionary* obj in _emptyList){
                     NSArray* tables = (NSArray*)[obj objectForKey:@"tables"];
                     for(NSDictionary* tbl in tables){
@@ -208,59 +223,106 @@
                 }
                 self.waiterTemplate = [NSArray arrayWithArray:waitersList];
                 [result addObject:waitersNameList];
+                
                 self.pickerView = [[BASPickerView alloc]initWithFrame:frame withContent:[NSArray arrayWithArray:result] withDoneButton:YES withCancelButton:YES];
                 self.pickerView.delegate = (id)self;
-                [self.view addSubview:_pickerView];
-                [self.view bringSubviewToFront:_pickerView];
                 [_pickerView selectRow:0 inComponent:0];
                 [_pickerView selectRow:0 inComponent:1];
-                app.isBusy = YES;
+                
+                self.customAlert = [[CustomIOSAlertView alloc] init];
+            
+                [self.customAlert setContainerView:self.pickerView];
+                [self.customAlert setButtonTitles:nil];
+                [self.customAlert setUseMotionEffects:true];
+                [self.customAlert show];
+
                 break;
-            case 1:
-                moveDict = @{
-                             @"id_order": (NSNumber*)[moveDict objectForKey:@"id_order"],
-                             @"id_dish_order": (NSNumber*)[moveDict objectForKey:@"id_dish_order"],
-                             @"id_table": [NSNumber numberWithInt:-1],
-                             @"id_employee": [NSNumber numberWithInt:-1],
-                             };
-                [self performSelector:@selector(showalertMessage) withObject:nil afterDelay:0.5];
-                return;
-                break;
-            case 2:{
-                if(tablesCount > 1){
-                    frame = CGRectMake(1024.f / 2 - 125.f, 768.f / 2 - 200.f, 250.f, 260.f);
-                    NSNumber* id_table = (NSNumber*)[moveDict objectForKey:@"id_table"];
+        }
+            case 1:{
+                if([self.orderList count] > 1){
+                    frame = CGRectMake(0,0,250,260);
                     for(NSDictionary* obj in _orderList){
-                        NSNumber* cur_table = (NSNumber*)[obj objectForKey:@"id_table"];
-                        if([id_table integerValue] != [cur_table integerValue]){
-                            [tablesList addObject:obj];
-                            NSNumber* number_table = (NSNumber*)[obj objectForKey:@"number_table"];
-                            [tablesNameList addObject:[NSString stringWithFormat:@"%d (%@)",[number_table intValue],(NSString*)[obj objectForKey:@"name_room"]]];
-                        }
-                        
+                        [tablesList addObject:obj];
+                        NSNumber* number_table = (NSNumber*)[obj objectForKey:@"number_table"];
+                        [tablesNameList addObject:[NSString stringWithFormat:@"%d (%@)",[number_table intValue],(NSString*)[obj objectForKey:@"name_room"]]];
                     }
                     self.orderTemplate = [NSArray arrayWithArray:tablesList];
                     [result addObject:tablesNameList];
-                    self.pickeView = [[BASPickerView alloc]initWithFrame:frame withContent:[NSArray arrayWithArray:result] withDoneButton:YES withCancelButton:NO];
-                    self.pickeView.delegate = (id)self;
-                    [self.view addSubview:_pickeView];
-                    [self.view bringSubviewToFront:_pickeView];
-                    [_pickeView selectRow:0 inComponent:0];
-                } else
-                    return;
+                    self.pickerView = [[BASPickerView alloc]initWithFrame:frame withContent:[NSArray arrayWithArray:result] withDoneButton:YES withCancelButton:NO];
+                    self.pickerView.delegate = (id)self;
+                    [_pickerView selectRow:0 inComponent:0];
+                    
+                    self.customAlert = [[CustomIOSAlertView alloc] init];
+                    [self.customAlert setContainerView:self.pickerView];
+                    [self.customAlert setButtonTitles:nil];
+                    [self.customAlert setUseMotionEffects:true];
+                    [self.customAlert show];
+                }
             }
+        }
+    }
+}
+
+
+#pragma mark - BASPickerView delegate methods
+- (void)doneClicked:(BASPickerView*)view withData:(NSDictionary*)data{
+    
+   BASManager* manager = [BASManager sharedInstance];
+    [self.customAlert close];
+    [_pickerView removeFromSuperview];
+    self.pickerView = nil;
+    NSDictionary *dict ;
+    
+    if(self.choiceIndex == 0){
+        NSNumber* index1 = (NSNumber*)[data objectForKey:@"row1"];
+        NSNumber* index2 = (NSNumber*)[data objectForKey:@"row2"];
+        NSDictionary* empty = (NSDictionary*)[_emptyTemplate objectAtIndex:[index1 integerValue]];
+        NSDictionary* waiter = (NSDictionary*)[_waiterTemplate objectAtIndex:[index2 integerValue]];
+        dict = @{
+                     @"id_dish_virtual": (NSNumber*)[self.moveDict objectForKey:@"id_dish_virtual"],
+                     @"id_table": (NSNumber*)[empty objectForKey:@"id_table"],
+                     @"id_employee": (NSNumber*)[waiter objectForKey:@"id_employee"],
+                     };
+      
+    } else if(self.choiceIndex == 1){
+        NSNumber* index1 = (NSNumber*)[data objectForKey:@"row1"];
+        NSDictionary* order = (NSDictionary*)[_orderTemplate objectAtIndex:[index1 integerValue]];
+        
+         dict = @{
+                    @"id_dish_virtual": (NSNumber*)[self.moveDict objectForKey:@"id_dish_virtual"],
+                     @"id_table": (NSNumber*)[order objectForKey:@"id_table"],
+                     @"id_employee": [NSNumber numberWithInt:-1],
+                     };
+    }
+    
+    [manager getData:[manager formatRequest:@"MOVETOTABLE" withParam:dict] success:^(id responseObject) {
+        
+        NSLog(@"Response: %@",responseObject);
+        NSArray* param = (NSArray*)[responseObject objectForKey:@"param"];
+        
+        if(param != nil && param.count > 0){
+            NSDictionary* dict = [param objectAtIndex:0];
+            NSDictionary* orderItems = [NSDictionary dictionaryWithObjectsAndKeys:[dict objectForKey:@"virtualTableElements"],@"order_items",nil];
+            NSDictionary* order = [NSDictionary dictionaryWithObjectsAndKeys:orderItems,@"order",nil];
+            self.contentData = order;
+            self.dishesContent = [dict objectForKey:@"virtualTableElements"];
+            [self performSelector:@selector(updateData) withObject:nil afterDelay:1.0];
+        }
+        
+        
+    } failure:^(NSString *error) {
+        [manager showAlertViewWithMess:ERROR_MESSAGE];
+    }];
+    
 
     
 }
-        
-- (void)updateData{
-    [self.tableView removeFromSuperview];
-    self.tableView = nil;
-    TheApp;
-     app.isVirtual = YES;
-    self.tableView = [[BASCustomTableView alloc]initWithFrame:self.view.frame style:UITableViewStyleGrouped withContent:_dishesContent withType:SWIPE withDelegate:self];
-    _tableView.delegate = (id)self;
-    [self.view addSubview:_tableView];
-    [app.virtualView UpdateBadge];
+
+- (void)cancelClicked:(BASPickerView*)view {
+    
+    [self.customAlert close];
+    [_pickerView removeFromSuperview];
+    
 }
+
 @end

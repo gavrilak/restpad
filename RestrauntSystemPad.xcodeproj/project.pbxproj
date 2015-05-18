@@ -263,6 +263,7 @@
 		A5C2247019B9CE3600FF2ACE /* cross_act@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5C2246E19B9CE3600FF2ACE /* cross_act@2x.png */; };
 		A5C2247119B9CE3600FF2ACE /* tick_act@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5C2246F19B9CE3600FF2ACE /* tick_act@2x.png */; };
 		BFD1EA301AC5AE3700215ADD /* btn_cancellation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFD1EA2F1AC5AE3700215ADD /* btn_cancellation@2x.png */; };
+		BFEE0A141B0A11C200671255 /* CustomIOSAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = BFEE0A131B0A11C200671255 /* CustomIOSAlertView.m */; };
 		BFEF2E091B0362FB00D8225E /* cell_garniru@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFEF2E081B0362FB00D8225E /* cell_garniru@2x.png */; };
 		BFEF2E0B1B03630800D8225E /* cell_kids@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFEF2E0A1B03630800D8225E /* cell_kids@2x.png */; };
 		CB617EDE197B9D6D00E9C3CF /* BASMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB617EDD197B9D6D00E9C3CF /* BASMenuController.m */; };
@@ -627,6 +628,8 @@
 		A5C2246E19B9CE3600FF2ACE /* cross_act@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cross_act@2x.png"; sourceTree = "<group>"; };
 		A5C2246F19B9CE3600FF2ACE /* tick_act@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tick_act@2x.png"; sourceTree = "<group>"; };
 		BFD1EA2F1AC5AE3700215ADD /* btn_cancellation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_cancellation@2x.png"; sourceTree = "<group>"; };
+		BFEE0A121B0A11C200671255 /* CustomIOSAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomIOSAlertView.h; sourceTree = "<group>"; };
+		BFEE0A131B0A11C200671255 /* CustomIOSAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomIOSAlertView.m; sourceTree = "<group>"; };
 		BFEF2E081B0362FB00D8225E /* cell_garniru@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell_garniru@2x.png"; sourceTree = "<group>"; };
 		BFEF2E0A1B03630800D8225E /* cell_kids@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell_kids@2x.png"; sourceTree = "<group>"; };
 		CB617EDC197B9D6D00E9C3CF /* BASMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BASMenuController.h; path = RestrauntSystemPad/BASMenuController.h; sourceTree = "<group>"; };
@@ -1322,6 +1325,7 @@
 		A59FBC06197A66A1006F3764 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				BFEE0A111B0A11C200671255 /* Custom Alert View */,
 				A5955EAB1A0786A600CA63F4 /* Statistic */,
 				A53EAD511A2C65060048C8FB /* InfographView */,
 				CB617EE2197B9DFA00E9C3CF /* Table */,
@@ -1458,6 +1462,15 @@
 				A5A0168D198240DF00680542 /* BASSortView.m */,
 			);
 			name = SortView;
+			sourceTree = "<group>";
+		};
+		BFEE0A111B0A11C200671255 /* Custom Alert View */ = {
+			isa = PBXGroup;
+			children = (
+				BFEE0A121B0A11C200671255 /* CustomIOSAlertView.h */,
+				BFEE0A131B0A11C200671255 /* CustomIOSAlertView.m */,
+			);
+			path = "Custom Alert View";
 			sourceTree = "<group>";
 		};
 		CB617EE2197B9DFA00E9C3CF /* Table */ = {
@@ -1860,6 +1873,7 @@
 				A59FBBE9197A5768006F3764 /* ASIS3Bucket.m in Sources */,
 				A59B5533197D2F4400A80E3F /* UIImage+MultiFormat.m in Sources */,
 				A59FBA99197A5463006F3764 /* BASAppDelegate.m in Sources */,
+				BFEE0A141B0A11C200671255 /* CustomIOSAlertView.m in Sources */,
 				CB617EDE197B9D6D00E9C3CF /* BASMenuController.m in Sources */,
 				A59FBBEE197A5768006F3764 /* ASIS3ServiceRequest.m in Sources */,
 				CB617EEC197B9ECC00E9C3CF /* BASNoticeTableViewCell.m in Sources */,

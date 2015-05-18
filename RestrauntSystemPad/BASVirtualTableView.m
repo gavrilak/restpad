@@ -84,7 +84,7 @@
                 if(self.popover.popoverVisible){
 
                 
-                    BASOrderViewController* controller =(BASOrderViewController*) self.popover.contentViewController;
+                    BASOrderViewController* controller = (BASOrderViewController*) self.popover.contentViewController;
                     [ controller.tableView reloadData];
                 }
                 
