@@ -41,8 +41,9 @@
      @synchronized(self) {
         __block UserType userType = userType;
         NSError* error = nil;
-        
-        NSURL *baseUrl = [NSURL URLWithString:[Settings text:TextForAPIBaseURL]];
+        NSString* customUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"urlCustom"];
+         
+        NSURL *baseUrl = (customUrl==nil) ?  [NSURL URLWithString:[Settings text:TextForAPIBaseURL]]: [NSURL URLWithString:customUrl];
         
         __block ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:baseUrl];
         [request addRequestHeader:@"Content-Type" value:@"application/json"];

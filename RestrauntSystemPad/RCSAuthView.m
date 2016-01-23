@@ -11,6 +11,8 @@
 
 @interface RCSAuthView () <UITextFieldDelegate>
 
+
+@property(nonatomic, strong) UITextField                *textFieldApi;
 @property(nonatomic, strong) UITextField                *textFieldLogin;
 @property(nonatomic, strong) UITextField                *textFieldPass;
 @property(nonatomic, strong) UIButton                   *btnEnter;
@@ -105,7 +107,10 @@
 {
     BOOL fieldsFilled = YES;
 
-   
+    NSString* customUrl = self.textFieldApi.text;
+    [[NSUserDefaults standardUserDefaults] setObject:customUrl forKey:@"urlCustom"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
     self.textFieldLogin.text = [self.textFieldLogin.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     self.textFieldPass.text = [self.textFieldPass.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if ([self.textFieldLogin.text isEqualToString:EmptyString]) {
@@ -135,6 +140,8 @@
     CGFloat distBetweenCntrls = [Settings floatValue:FloatValueForAuthCntrsDistVert];
     CGFloat top = (768.f - btnHeight) / 2 - textFieldHeight - distBetweenCntrls;
     
+    
+    self.textFieldApi = [self setupTextFieldWithTop:20 andPlaceholder:[Settings text:TextForAPIBaseURL] andTag:0 andSecured:NO];
     self.textFieldLogin = [self setupTextFieldWithTop:top andPlaceholder:[Settings text:TextForAuthLoginCap] andTag:0 andSecured:NO];
     self.textFieldPass = [self setupTextFieldWithTop:top + textFieldHeight + distBetweenCntrls andPlaceholder:[Settings text:TextForAuthPassCap] andTag:1 andSecured:YES];
 }
